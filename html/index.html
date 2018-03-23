@@ -40,10 +40,50 @@
     <link rel="stylesheet" href="/style/lib.css?v=0.0">
     <link inline rel="stylesheet" href="/style/style.css">
 </head>
-<div>Hello World!</div>
+<div class="container"><br /></div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="input-group">
+				<input class="coupled-input form-control" data-id="0" datatype=text />
+				<span class="input-group-addon" >years</span>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<input id="input-years" class="coupled-input" data-id="0" type="range" min="1" max="15" step="1" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="input-group">
+				<input class="coupled-input form-control" data-id="1" datatype=text />
+				<span class="input-group-addon" >₹</span>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<input id="input-principle" class="coupled-input" data-id="1" type="range" min="1000" max="15000" step="100" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="input-group">
+				<input class="coupled-input form-control" data-id="2" datatype=text />
+				<span class="input-group-addon" >% per annum</span>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<input id="input-interest-rate" class="coupled-input" data-id="2" type="range" min="1" max="20" step="0.01" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			EMI: ₹<span id="calculated-emi"></span>
+		</div>
+	</div>
+</div>
 
+</body>
 <!-- JS Libs -->
 <script src="/js/build/lib.js?v=0.0"></script>
 <script inline src="/js/build/bundle.js"></script>
-</body>
 </html>

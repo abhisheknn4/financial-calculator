@@ -6,3 +6,15 @@ body, html {
 	/* Disables pull-to-refresh */
 	overscroll-behavior-y: none;
 }
+
+input[type=range] {
+	cursor: col-resize
+}
+
+.row {
+	margin-top: 20px;
+}
+
+.input-group-addon:last-child {
+	width: 35%;
+}
