@@ -40,6 +40,10 @@ input[type=range] {
 	border-top-right-radius: 5px;
 }
 
+.chart-container .column.active {
+	background: #bcd900;
+}
+
 .chart-container .column-value {
 	float: left;
 	width: 100%;

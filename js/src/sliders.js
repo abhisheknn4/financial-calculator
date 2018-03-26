@@ -16,11 +16,16 @@ function getEmi(params){
 
 function changeHandler(elem){
 	if(elem.val() != elem.attr(changeHandlerStateKey)){
+		var dataId = elem.attr('data-id');
+		
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		var emi = getEmi();
 		$('#calculated-emi').text(emi);
-		drawGraphs();
+		drawGraphs(dataId);
+		setActiveBar({
+			dataId: dataId
+		});
 	}
 }
 
@@ -79,30 +84,62 @@ function getData(params){
 	return range;
 }
 
-function drawGraphs(){
-	$('#variance-years').html(getDivs({
-		data: getData({
-			numSteps: 40,
-			input: $('#input-years'),
-			variateKey: 'years'
-		})
-	}));
+function setActiveBar(params){
+	var graph = $('.chart-container[data-id='+params.dataId+']');
+	var bars = graph.children();
+	if(bars.length){
+		params.input = $('input[type=range][data-id='+params.dataId+']');
+		var numBars = bars.length;
+		var maxValue = params.input.attr('max');
+		var minValue = params.input.attr('min');
+		var range = maxValue - minValue;
+		var ratio = (params.input.val()-minValue) / range;
+		console.log(ratio);
+		var targetBarId = Math.min(Math.floor(ratio * numBars), bars.length - 1);
 	
-	$('#variance-principle').html(getDivs({
-		data: getData({
-			numSteps: 40,
-			input: $('#input-principle'),
-			variateKey: 'principle'
-		})
-	}));
+		console.log(bars);
+		console.log(targetBarId);
 	
-	$('#variance-interest-rate').html(getDivs({
-		data: getData({
-			numSteps: 40,
-			input: $('#input-interest-rate'),
-			variateKey: 'interest'
-		})
-	}));
+		$('.chart-container[data-id='+params.dataId+'] .active').removeClass('active');
+		$(bars[targetBarId]).addClass('active');
+	}
+}
+
+function drawGraph(params){
+	if(params.graph.attr('data-id') != params.changedInputDataId){
+		var numSteps = params.numSteps || 40;
+		params.graph.html(getDivs({
+			data: getData({
+				numSteps: numSteps,
+				input: params.targetInput,
+				variateKey: params.variateKey
+			})
+		}));
+		params.graph.attr('num-ste')
+	}
+}
+
+function drawGraphs(dataId){
+	drawGraph({
+		graph: $('#variance-years'),
+		changedInputDataId: dataId,
+		targetInput: $('#input-years'),
+		variateKey: 'years'
+	});
+
+	drawGraph({
+		graph: $('#variance-principle'),
+		changedInputDataId: dataId,
+		targetInput: $('#input-principle'),
+		variateKey: 'principle'
+	});
+	
+	drawGraph({
+		graph: $('#variance-interest-rate'),
+		changedInputDataId: dataId,
+		targetInput: $('#input-interest-rate'),
+		variateKey: 'interest'
+	});
 }
 
 $(document).ready(function(){
