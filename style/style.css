@@ -21,8 +21,9 @@ input[type=range] {
 
 .chart-group-container {
 	position: relative;
-	width: 100%;
+	width: 90%;
 	height: 140px;
+	margin: 5%;
 }
 
 .chart-container {

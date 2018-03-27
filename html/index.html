@@ -40,19 +40,69 @@
     <link rel="stylesheet" href="/style/lib.css?v=0.0">
     <link inline rel="stylesheet" href="/style/style.css">
 </head>
-<div class="container"><br /></div>
-<div class="container">
+
+<div class="container-fluid">
+	<div class="panel panel-default">
+		<div class="panel-heading text-center"><h2>EV Calculator</h2></div>
+	</div>
+	
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Vehicle Selection</h3></div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-12">Bus cost</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="input-group">
+							<span class="input-group-addon" >Fossil: ₹</span>
+							<input class="coupled-input form-control" data-id="0" type=number min="2000000" max="20000000" step="50000" />
+						</div>
+						<div class="chart-group-container">
+							<div class="chart-container" data-id="0"></div>
+							<input id="" class="coupled-input" data-id="0" type="range" min="1" max="100" step="1" />
+							<div class="input-value-display" ><span></span> years</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<span class="input-group-addon" >₹</span>
+							<input class="coupled-input form-control" data-id="1" type=number min="2000000" max="20000000" step="50000" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Usage Data</h3></div>
+			<div class="panel-body">Panel Content</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Capital Costs</h3></div>
+			<div class="panel-body">Panel Content</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Running Costs</h3></div>
+			<div class="panel-body">Panel Content</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Maintenance</h3></div>
+			<div class="panel-body">Panel Content</div>
+		</div>
+	</div>
+	
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="input-group">
-				<input class="coupled-input form-control" data-id="0" type=number min="1" max="100" step="1" />
+				<input class="coupled-input form-control" data-id="-1" type=number min="1" max="100" step="1" />
 				<span class="input-group-addon" >years</span>
 			</div>
 		</div>
 		<div class="col-sm-8">
-			<div class="chart-group-container">
-				<div id="variance-years" class="chart-container" data-id="0"></div>
-				<input id="input-years" class="coupled-input" data-id="0" type="range" min="1" max="100" step="1" />
+			<div class="chart-group-container" variate-key="years">
+				<div class="chart-container"></div>
+				<input id="input-years" class="coupled-input" data-id="-1" type="range" min="1" max="100" step="1" />
 				<div class="input-value-display" ><span></span> years</div>
 			</div>
 		</div>
@@ -60,14 +110,14 @@
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="input-group">
-				<input class="coupled-input form-control" data-id="1" type=number min="1000" max="15000" step="100"/>
+				<input class="coupled-input form-control" data-id="-2" type=number min="1000" max="15000" step="100"/>
 				<span class="input-group-addon" >₹</span>
 			</div>
 		</div>
 		<div class="col-sm-8">
-			<div class="chart-group-container">
-				<div id="variance-principle" class="chart-container" data-id="1"></div>
-				<input id="input-principle" class="coupled-input" data-id="1" type="range" min="1000" max="15000" step="100" />
+			<div class="chart-group-container" variate-key="principle">
+				<div class="chart-container"></div>
+				<input id="input-principle" class="coupled-input" data-id="-2" type="range" min="1000" max="15000" step="100" />
 				<div class="input-value-display" >₹ <span></span></div>
 			</div>
 		</div>
@@ -75,14 +125,14 @@
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="input-group">
-				<input class="coupled-input form-control" data-id="2" type=number min="1" max="20" step="0.01" />
+				<input class="coupled-input form-control" data-id="-3" type=number min="1" max="20" step="0.01" />
 				<span class="input-group-addon" >% per annum</span>
 			</div>
 		</div>
 		<div class="col-sm-8">
-			<div class="chart-group-container">
-				<div id="variance-interest-rate" class="chart-container" data-id="2"></div>
-				<input id="input-interest-rate" class="coupled-input" data-id="2" type="range" min="1" max="20" step="0.01" />
+			<div class="chart-group-container" variate-key="interest">
+				<div class="chart-container"></div>
+				<input id="input-interest-rate" class="coupled-input" data-id="-3" type="range" min="1" max="20" step="0.01" />
 				<div class="input-value-display" ><span></span> %</div>
 			</div>
 		</div>
@@ -92,6 +142,7 @@
 			EMI: ₹<span id="calculated-emi"></span>
 		</div>
 	</div>
+	
 </div>
 
 </body>

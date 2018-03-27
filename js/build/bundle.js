@@ -5,22 +5,27 @@ if('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('/sw.js').catch(function(err) {console.err("Error registering service worker", err);});
 }
 
-},{"./sliders.js":2}],2:[function(require,module,exports){
-var changeHandlerStateKey = "lastHandledValue";
-
+},{"./sliders.js":3}],2:[function(require,module,exports){
 function isset(val){
 	return typeof val != 'undefined';
 }
 
-function getEmi(params){
-	params = params || {};
-	var principle = isset(params.principle) ? params.principle : $('#input-principle').val();
-	var interest = (isset(params.interest)? params.interest : $('#input-interest-rate').val()) / 1200;
-	var months = (isset(params.years) ? params.years : $('#input-years').val()) * 12;
+module.exports = {
+	getEmi: function(params){
+		params = params || {};
+		var principle = isset(params.principle) ? params.principle : $('#input-principle').val();
+		var interest = (isset(params.interest)? params.interest : $('#input-interest-rate').val()) / 1200;
+		var months = (isset(params.years) ? params.years : $('#input-years').val()) * 12;
 	
-	var powerVal = Math.pow(1+interest, months);
-	return Math.round((principle * interest * powerVal)/(powerVal - 1)*100)/100;
+		var powerVal = Math.pow(1+interest, months);
+		return Math.round((principle * interest * powerVal)/(powerVal - 1)*100)/100;
+	}
 }
+
+},{}],3:[function(require,module,exports){
+var math = require("./math.js");
+
+var changeHandlerStateKey = "lastHandledValue";
 
 function changeHandler(elem){
 	if(elem.val() != elem.attr(changeHandlerStateKey)){
@@ -28,7 +33,7 @@ function changeHandler(elem){
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		
-		var emi = getEmi();
+		var emi = math.getEmi();
 		$('#calculated-emi').text(emi);
 		drawGraphs(dataId);
 		setActiveBar(dataId);
@@ -45,11 +50,9 @@ function changeHandler(elem){
 $(".coupled-input").change(function(){
 	changeHandler($(this));
 });
-
 $(".coupled-input").on("input", function(){
 	changeHandler($(this));
 });
-
 $(document).ready(function(){
 	$('input[type=range]').each(function(){
 		changeHandler($(this));
@@ -92,7 +95,7 @@ function getData(params){
 		
 		range.push({
 			range: roundX,
-			val: getEmi(variateBlock)
+			val: math.getEmi(variateBlock)
 		});
 	}
 	return range;
@@ -142,30 +145,28 @@ function drawGraph(params){
 }
 
 function drawGraphs(dataId){
-	drawGraph({
-		graph: $('#variance-years'),
-		changedInputDataId: dataId,
-		targetInput: $('#input-years'),
-		variateKey: 'years'
-	});
-
-	drawGraph({
-		graph: $('#variance-principle'),
-		changedInputDataId: dataId,
-		targetInput: $('#input-principle'),
-		variateKey: 'principle'
-	});
-	
-	drawGraph({
-		graph: $('#variance-interest-rate'),
-		changedInputDataId: dataId,
-		targetInput: $('#input-interest-rate'),
-		variateKey: 'interest'
+	$('.chart-group-container').each(function(){
+		var self = $(this);
+		drawGraph({
+			graph: self.children('.chart-container'),
+			changedInputDataId: dataId,
+			targetInput: self.children('input[type=range]'),
+			variateKey: self.attr('variate-key')
+		});
 	});
 }
 
 $(document).ready(function(){
 	drawGraphs();
+	
+	$('.chart-group-container>input').each(function(){
+		var self = $(this);
+		if(typeof self.attr('data-id') != 'undefined'){
+			self.parent().children().each(function(){
+				$(this).attr('data-id', self.attr('data-id'));
+			});
+		}
+	});
 });
 
-},{}]},{},[1]);
+},{"./math.js":2}]},{},[1]);
