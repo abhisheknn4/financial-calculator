@@ -25,15 +25,12 @@ function getEmi(params){
 function changeHandler(elem){
 	if(elem.val() != elem.attr(changeHandlerStateKey)){
 		var dataId = elem.attr('data-id');
-		
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
-		var emi = getEmi();
-		$('#calculated-emi').text(emi);
+		
+		$('#calculated-emi').text(getEmi());
 		drawGraphs(dataId);
-		setActiveBar({
-			dataId: dataId
-		});
+		setActiveBar(dataId);
 		setValueDisplay(dataId);
 	}
 }
@@ -66,19 +63,20 @@ function getDivs(params){
 	
 	return params.data.map(function(o){
 		return "<div style=\"width:"+width+"%;\" class=\"column\" range=\""+o.range+"\">\
+			<div class=\"column-value-display\">"+o.val+"</div>\
 			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
 	});
 }
 
 function getData(params){
-	var minValue = params.input.attr('min');
-	var maxValue = params.input.attr('max');
+	var minValue = parseFloat(params.input.attr('min'));
+	var maxValue = parseFloat(params.input.attr('max'));
 	var range = [];
 	var sliderStep = parseFloat(params.input.attr('step'));
 	var stepSize = (maxValue-minValue)/params.numSteps;
 	for(var i=0; i<params.numSteps; i++){
-		var x = (i*stepSize) + (stepSize/2);
+		var x = (i*stepSize) + (stepSize/2) + minValue;
 		var multiplier = Math.round(x/sliderStep);
 		var roundX = sliderStep*multiplier;
 		
@@ -93,17 +91,17 @@ function getData(params){
 	return range;
 }
 
-function setActiveBar(params){
-	var graph = $('.chart-container[data-id='+params.dataId+']');
+function setActiveBar(dataId){
+	var graph = $('.chart-container[data-id='+dataId+']');
 	var bars = graph.children();
 	if(bars.length){
-		var input = $('input[type=range][data-id='+params.dataId+']');
+		var input = $('input[type=range][data-id='+dataId+']');
 		var maxValue = input.attr('max');
 		var minValue = input.attr('min');
 		var ratio = (input.val() - minValue) / (maxValue - minValue);
 		var targetBarId = Math.min(Math.floor(ratio * bars.length), bars.length - 1);
 	
-		$('.chart-container[data-id='+params.dataId+'] .active').removeClass('active');
+		$('.chart-container[data-id='+dataId+'] .active').removeClass('active');
 		$(bars[targetBarId]).addClass('active');
 	}
 }
@@ -124,7 +122,7 @@ function setValueDisplay(dataId){
 
 function drawGraph(params){
 	if(params.graph.attr('data-id') != params.changedInputDataId){
-		var numSteps = params.numSteps || 40;
+		var numSteps = params.numSteps || 81;
 		params.graph.html(getDivs({
 			data: getData({
 				numSteps: numSteps,
@@ -132,9 +130,7 @@ function drawGraph(params){
 				variateKey: params.variateKey
 			})
 		}));
-		setActiveBar({
-			dataId: params.graph.attr('data-id')
-		});
+		setActiveBar(params.graph.attr('data-id'));
 	}
 }
 
