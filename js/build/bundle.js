@@ -34,6 +34,7 @@ function changeHandler(elem){
 		setActiveBar({
 			dataId: dataId
 		});
+		setValueDisplay(dataId);
 	}
 }
 
@@ -105,6 +106,20 @@ function setActiveBar(params){
 		$('.chart-container[data-id='+params.dataId+'] .active').removeClass('active');
 		$(bars[targetBarId]).addClass('active');
 	}
+}
+
+function setValueDisplay(dataId){
+	var input = $('input[type=range][data-id='+dataId+']');
+	var valueDisplay = input.parent().children('.input-value-display');
+	
+	/* Set value */
+	valueDisplay.text(input.val());	
+	
+	/* Set Position */
+	var displayWidth = valueDisplay.outerWidth();
+	var range = input.attr('max') - input.attr('min');
+	var left = Math.round((input.parent().width() * (input.val() - input.attr('min'))/range) - displayWidth/2);
+	valueDisplay.css('left', left + 'px');
 }
 
 function drawGraph(params){
