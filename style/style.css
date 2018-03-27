@@ -36,6 +36,7 @@ input[type=range] {
 	background: #ffffff;
 	border-right: 1px solid #ffffff;
 	position: relative;
+	cursor: pointer;
 }
 
 .chart-container .column.active .column-value {
@@ -44,7 +45,7 @@ input[type=range] {
 
 .chart-container .column-value {
 	width: 100%;
-	background: #efefef;
+	background: #e1e1e1;
 	position: absolute;
 	bottom: 0;
 }
@@ -67,12 +68,21 @@ input[type=range] {
 	display: block;
 }
 
+.chart-container .column:hover .column-value-display {
+	display: block;
+	background: white;
+	z-index: 2;
+	border-radius: 6px;
+	color: #bcd900;
+}
+
 .input-value-display {
 	position: absolute;
 	bottom: 0;
 	width: auto;
 	height: 24px;
 	padding: 3px 16px;
+	white-space: nowrap;
 }
 
 /* Slider styles */

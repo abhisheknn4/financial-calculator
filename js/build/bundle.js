@@ -28,10 +28,17 @@ function changeHandler(elem){
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		
-		$('#calculated-emi').text(getEmi());
+		var emi = getEmi();
+		$('#calculated-emi').text(emi);
 		drawGraphs(dataId);
 		setActiveBar(dataId);
 		setValueDisplay(dataId);
+		
+		$('.column-value-display').each(function(){
+			var t = $(this);
+			t.text("₹ " + t.attr('value'));
+		});
+		$('.column.active .column-value-display').text("₹ " + emi);
 	}
 }
 
@@ -63,7 +70,7 @@ function getDivs(params){
 	
 	return params.data.map(function(o, index){
 		return "<div style=\"width:"+width+"%;\" class=\"column\" range=\""+o.range+"\">\
-			<div style=\"bottom:"+(o.val*multiplier)+"%;\" class=\"column-value-display "+((index==0 || index==params.data.length-1) ? "column-value-display-terminal" : "")+"\">₹ "+o.val+"</div>\
+			<div style=\"bottom:"+(o.val*multiplier)+"%;\" class=\"column-value-display "+((index==0 || index==params.data.length-1) ? "column-value-display-terminal" : "")+"\" value=\""+o.val+"\">₹ "+o.val+"</div>\
 			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
 	});
@@ -111,7 +118,7 @@ function setValueDisplay(dataId){
 	var valueDisplay = input.parent().children('.input-value-display');
 	
 	/* Set value */
-	valueDisplay.text(input.val());	
+	valueDisplay.children('span').text(input.val());	
 	
 	/* Set Position */
 	var displayWidth = valueDisplay.outerWidth();
