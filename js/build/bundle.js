@@ -65,7 +65,7 @@ function getDivs(params){
 	
 	return params.data.map(function(o){
 		return "<div style=\"width:"+width+"%;\" class=\"column\" range=\""+o.range+"\">\
-			<div style=\"height:"+(100 - (o.val*multiplier))+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
+			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
 	});
 }
@@ -96,17 +96,11 @@ function setActiveBar(params){
 	var graph = $('.chart-container[data-id='+params.dataId+']');
 	var bars = graph.children();
 	if(bars.length){
-		params.input = $('input[type=range][data-id='+params.dataId+']');
-		var numBars = bars.length;
-		var maxValue = params.input.attr('max');
-		var minValue = params.input.attr('min');
-		var range = maxValue - minValue;
-		var ratio = (params.input.val()-minValue) / range;
-		console.log(ratio);
-		var targetBarId = Math.min(Math.floor(ratio * numBars), bars.length - 1);
-	
-		console.log(bars);
-		console.log(targetBarId);
+		var input = $('input[type=range][data-id='+params.dataId+']');
+		var maxValue = input.attr('max');
+		var minValue = input.attr('min');
+		var ratio = (input.val() - minValue) / (maxValue - minValue);
+		var targetBarId = Math.min(Math.floor(ratio * bars.length), bars.length - 1);
 	
 		$('.chart-container[data-id='+params.dataId+'] .active').removeClass('active');
 		$(bars[targetBarId]).addClass('active');
@@ -123,7 +117,9 @@ function drawGraph(params){
 				variateKey: params.variateKey
 			})
 		}));
-		params.graph.attr('num-ste')
+		setActiveBar({
+			dataId: params.graph.attr('data-id')
+		});
 	}
 }
 

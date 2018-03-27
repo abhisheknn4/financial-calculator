@@ -33,21 +33,22 @@ input[type=range] {
 .chart-container .column {
 	float: left;
 	height: 100%;
-	background: #efefef;
+	background: #ffffff;
 	box-sizing: bounding-box;
 	border-right: 1px solid #ffffff;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	position: relative;
 }
 
-.chart-container .column.active {
+.chart-container .column.active .column-value {
 	background: #bcd900;
 }
 
 .chart-container .column-value {
 	float: left;
 	width: 100%;
-	background: #ffffff;
+	background: #efefef;
+	position: absolute;
+	bottom: 0;
 }
 
 /* Slider styles */
