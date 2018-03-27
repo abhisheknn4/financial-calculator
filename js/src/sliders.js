@@ -53,9 +53,9 @@ function getDivs(params){
 	});
 	var multiplier = 100/maxValue;
 	
-	return params.data.map(function(o){
+	return params.data.map(function(o, index){
 		return "<div style=\"width:"+width+"%;\" class=\"column\" range=\""+o.range+"\">\
-			<div class=\"column-value-display\">"+o.val+"</div>\
+			<div style=\"bottom:"+(o.val*multiplier)+"%;\" class=\"column-value-display "+((index==0 || index==params.data.length-1) ? "column-value-display-terminal" : "")+"\">₹ "+o.val+"</div>\
 			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
 	});

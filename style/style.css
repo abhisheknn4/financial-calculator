@@ -55,8 +55,12 @@ input[type=range] {
 	z-index: 1;
 	width: 100px;
 	text-align: center;
-	top: 0;
-	left: -40px;
+	left: 50%;
+	margin-left: -50px;
+}
+
+.chart-container .column-value-display-terminal {
+	display: block;
 }
 
 .chart-container .column.active .column-value-display {
