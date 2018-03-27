@@ -165,6 +165,13 @@ $(document).ready(function(){
 			self.parent().children().each(function(){
 				$(this).attr('data-id', self.attr('data-id'));
 			});
+			
+			if(self.hasClass('coupled-input')){
+				var inputs = $('.coupled-input[data-id='+self.attr('data-id')+']');
+				inputs.attr('min', self.attr('min'));
+				inputs.attr('max', self.attr('max'));
+				inputs.attr('step', self.attr('step'));
+			}
 		}
 	});
 });
