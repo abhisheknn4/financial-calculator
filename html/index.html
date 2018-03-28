@@ -40,15 +40,19 @@
     <link rel="stylesheet" href="/style/lib.css?v=0.0">
     <link inline rel="stylesheet" href="/style/style.css">
 </head>
+<body>
 
-<div class="container-fluid main-container">
-	<div id="top-values" class="text-center">
+<div id="top-values">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-4"><h3>NPV Electric: <span></span></h3></div>
-			<div class="col-sm-4"><h3>NPV Diesel: <span></span></h3></div>
-			<div class="col-sm-4"><h3>Payback Period (months): <span></span></h3></div>
+			<div class="col-sm-3"><h3>NPV (Electric): <span></span></h3></div>
+			<div class="col-sm-3"><h3>NPV (Fossil): <span></span></h3></div>
+			<div class="col-sm-6"><h3>Payback Period (months): <span></span></h3></div>
 		</div>
 	</div>
+</div>
+
+<div class="container-fluid main-container">
 	
 	<div class="panel-group">
 		<div class="panel panel-default">
@@ -241,7 +245,93 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading"><h3>Usage Data</h3></div>
-			<div class="panel-body">Panel Content</div>
+			<div class="panel-body">
+				
+				<!-- Daily run -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Daily run</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Daily run" />
+										<span class="input-group-addon">km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="10" max="1000" step="5" />
+									<div class="input-value-display" ><span></span> km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Running days -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Running days</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Running days" />
+										<span class="input-group-addon">days</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="30" step="1" />
+									<div class="input-value-display" ><span></span> days</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Usage years -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Usage years</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Running days" />
+										<span class="input-group-addon">years</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="10" step="1" />
+									<div class="input-value-display" ><span></span> years</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+			</div>
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading"><h3>Capital Costs</h3></div>
