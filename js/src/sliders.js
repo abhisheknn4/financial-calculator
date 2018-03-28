@@ -22,18 +22,6 @@ function changeHandler(elem){
 	}
 }
 
-$(".coupled-input").change(function(){
-	changeHandler($(this));
-});
-$(".coupled-input").on("input", function(){
-	changeHandler($(this));
-});
-$(document).ready(function(){
-	$('input[type=range]').each(function(){
-		changeHandler($(this));
-	});
-});
-
 /***********Charts*************/
 
 function getDivs(params){
@@ -156,4 +144,16 @@ $(document).ready(function(){
 	});
 	
 	drawGraphs();
+	
+	$(".coupled-input").change(function(){
+		changeHandler($(this));
+	});
+	$(".coupled-input").on("input", function(){
+		changeHandler($(this));
+	});
+	$(document).ready(function(){
+		$('input[type=range]').each(function(){
+			changeHandler($(this));
+		});
+	});
 });
