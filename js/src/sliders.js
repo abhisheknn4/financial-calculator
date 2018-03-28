@@ -2,6 +2,17 @@ var math = require("./math.js");
 
 var changeHandlerStateKey = "lastHandledValue";
 
+function isScrolledIntoView(elem){
+	var docViewTop = $(window).scrollTop();
+	var docViewBottom = docViewTop + $(window).height();
+
+	var elemTop = elem.offset().top;
+	var elemBottom = elemTop + elem.height();
+
+	return (elemBottom <= docViewBottom && elemBottom >= docViewTop) || 
+		(elemTop <= docViewBottom && elemTop >= docViewTop);
+}
+
 function changeHandler(elem){
 	if(elem.val() != elem.attr(changeHandlerStateKey)){
 		var dataId = elem.attr('data-id');
@@ -93,8 +104,12 @@ function setValueDisplay(dataId){
 	valueDisplay.css('left', left + 'px');
 }
 
-function drawGraph(params){
-	if(params.graph.attr('data-id') != params.changedInputDataId){
+var drawTimeOuts = {};
+function drawGraph(params, delayed){
+	var selfDataId = params.graph.attr('data-id');
+	clearTimeout(drawTimeOuts[selfDataId]);
+	/* Update only those graphs which are visible on screen */
+	if(isScrolledIntoView(params.graph) || delayed){
 		var numSteps = params.numSteps || 21;
 		params.graph.html(getDivs({
 			data: getData({
@@ -106,28 +121,21 @@ function drawGraph(params){
 		}));
 		setActiveBar(params.graph.attr('data-id'));
 	}
+	/* Other graphs will be updated only after input change stabalizes */
+	else{
+		drawTimeOuts[selfDataId] = setTimeout(drawGraph, 1000, params, true);
+	}
 }
 
-function drawGraphs(dataId){
+function drawGraphs(dataId, delayed){
 	$('.chart-group-container').each(function(){
 		var self = $(this);
-		var params = {
-			graph: self.children('.chart-container'),
-			changedInputDataId: dataId,
-			targetInput: self.children('input[type=range]'),
-			variateKey: self.attr('variate-key')
-		};
-		if(params.graph.attr('data-id') != params.changedInputDataId){
-			var numSteps = params.numSteps || 21;
-			params.graph.html(getDivs({
-				data: getData({
-					numSteps: numSteps,
-					input: params.targetInput,
-					variateKey: params.variateKey
-				}),
-				dataId: params.graph.attr('data-id')
-			}));
-			setActiveBar(params.graph.attr('data-id'));
+		if(self.attr('data-id') != dataId){
+			drawGraph({
+				graph: self.children('.chart-container'),
+				targetInput: self.children('input[type=range]'),
+				variateKey: self.attr('variate-key'),
+			});
 		}
 	});
 }
