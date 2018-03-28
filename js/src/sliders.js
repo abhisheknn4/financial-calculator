@@ -117,9 +117,9 @@ function drawGraph(params, delayed){
 				input: params.targetInput,
 				variateKey: params.variateKey
 			}),
-			dataId: params.graph.attr('data-id')
+			dataId: selfDataId
 		}));
-		setActiveBar(params.graph.attr('data-id'));
+		setActiveBar(selfDataId);
 	}
 	/* Other graphs will be updated only after input change stabalizes */
 	else{
@@ -173,7 +173,7 @@ $(document).ready(function(){
 	});
 	$(document).ready(function(){
 		$('input[type=range]').each(function(){
-			changeHandler($(this));
+			setValueDisplay($(this).attr('data-id'));
 		});
 	});
 });
