@@ -1,3 +1,8 @@
+/* 
+	Theme-color-light: 82b974
+	Theme-color-dark: 56a243
+*/
+
 body {
 	font-family: 'Nunito', sans-serif;
 }
@@ -9,6 +14,33 @@ body, html {
 
 input[type=range] {
 	cursor: col-resize;
+}
+
+.main-container {
+	padding-top: 72px;
+}
+
+.sub-section {
+	margin-top: 15px;
+	border-top: 1px solid #ddd
+}
+.sub-section h4 {
+	color: #56a243;
+}
+.sub-section:first-child {
+	border-top: 0;
+}
+
+#top-values {
+	left: 15px;
+	right: 15px;
+	z-index: 99;
+	height: 67px;
+	top: 0;
+	background: #f5f5f5;
+	position: fixed;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
 
 .graph-row>div {
@@ -45,7 +77,7 @@ input[type=range] {
 }
 
 .chart-container .column.active .column-value {
-	background: #bcd900;
+	background: #82b974;
 }
 
 .chart-container .column-value {
@@ -78,7 +110,7 @@ input[type=range] {
 	background: white;
 	z-index: 2;
 	border-radius: 6px;
-	color: #bcd900;
+	color: #82b974;
 }
 
 .input-value-display {
@@ -132,7 +164,7 @@ input[type=range]::-webkit-slider-thumb {
 	height: 0; 
 	border-left: 16px solid transparent;
 	border-right: 16px solid transparent;
-	border-bottom: 16px solid #bcd900;
+	border-bottom: 16px solid #82b974;
 	background: transparent;
 	border-radius: 0;
 }
@@ -144,7 +176,7 @@ input[type=range]::-moz-range-thumb {
 	height: 0; 
 	border-left: 16px solid transparent;
 	border-right: 16px solid transparent;
-	border-bottom: 16px solid #bcd900;
+	border-bottom: 16px solid #82b974;
 	background: transparent;
 	border-radius: 0;
 	padding-top: 13px;
@@ -157,7 +189,7 @@ input[type=range]::-ms-thumb {
 	height: 0; 
 	border-left: 16px solid transparent;
 	border-right: 16px solid transparent;
-	border-bottom: 16px solid #bcd900;
+	border-bottom: 16px solid #82b974;
 	background: transparent;
 	border-radius: 0;
 	margin-top: 4px;

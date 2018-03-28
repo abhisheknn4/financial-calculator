@@ -111,12 +111,24 @@ function drawGraph(params){
 function drawGraphs(dataId){
 	$('.chart-group-container').each(function(){
 		var self = $(this);
-		drawGraph({
+		var params = {
 			graph: self.children('.chart-container'),
 			changedInputDataId: dataId,
 			targetInput: self.children('input[type=range]'),
 			variateKey: self.attr('variate-key')
-		});
+		};
+		if(params.graph.attr('data-id') != params.changedInputDataId){
+			var numSteps = params.numSteps || 21;
+			params.graph.html(getDivs({
+				data: getData({
+					numSteps: numSteps,
+					input: params.targetInput,
+					variateKey: params.variateKey
+				}),
+				dataId: params.graph.attr('data-id')
+			}));
+			setActiveBar(params.graph.attr('data-id'));
+		}
 	});
 }
 

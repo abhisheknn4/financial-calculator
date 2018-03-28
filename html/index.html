@@ -41,9 +41,13 @@
     <link inline rel="stylesheet" href="/style/style.css">
 </head>
 
-<div class="container-fluid">
-	<div class="panel panel-default">
-		<div class="panel-heading text-center"><h2>EV Calculator</h2></div>
+<div class="container-fluid main-container">
+	<div id="top-values" class="text-center">
+		<div class="row">
+			<div class="col-sm-4"><h3>NPV Electric: <span></span></h3></div>
+			<div class="col-sm-4"><h3>NPV Diesel: <span></span></h3></div>
+			<div class="col-sm-4"><h3>Payback Period (months): <span></span></h3></div>
+		</div>
 	</div>
 	
 	<div class="panel-group">
@@ -51,8 +55,8 @@
 			<div class="panel-heading"><h3>Vehicle Selection</h3></div>
 			<div class="panel-body">
 				
-				<!-- Bus Cost -->
-				<div class="row">
+				<!-- Bus cost -->
+				<div class="row sub-section">
 					<div class="col-md-12"><h4>Bus cost</h4></div>
 				</div>
 				<div class="row">
@@ -63,15 +67,16 @@
 									<label>Electric</label>
 									<div class="input-group">
 										<span class="input-group-addon">₹</span>
-										<input class="coupled-input form-control" type=number placeholder="Electric: ₹" />
+										<input class="coupled-input form-control" type=number placeholder="Bus cost" />
+										<span class="input-group-addon">lakh</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-8">
 								<div class="chart-group-container">
 									<div class="chart-container"></div>
-									<input id="" class="coupled-input" type="range" min="2000000" max="20000000" step="50000" />
-									<div class="input-value-display" >₹ <span></span></div>
+									<input id="" class="coupled-input" type="range" min="20" max="200" step="0.5" />
+									<div class="input-value-display" >₹ <span></span> lakh</div>
 								</div>
 							</div>
 						</div>
@@ -83,15 +88,16 @@
 									<label>Fossil</label>
 									<div class="input-group">
 										<span class="input-group-addon">₹</span>
-										<input class="coupled-input form-control" type=number placeholder="Fossil: ₹" />
+										<input class="coupled-input form-control" type=number placeholder="Bus cost" />
+										<span class="input-group-addon">lakh</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-8">
 								<div class="chart-group-container">
 									<div class="chart-container"></div>
-									<input id="" class="coupled-input" type="range" min="2000000" max="20000000" step="50000" />
-									<div class="input-value-display" >₹ <span></span></div>
+									<input id="" class="coupled-input" type="range" min="20" max="200" step="0.5" />
+									<div class="input-value-display" >₹ <span></span> lakh</div>
 								</div>
 							</div>
 						</div>
@@ -99,27 +105,27 @@
 				</div>
 				<!-------------->
 				
-				<!-- Battery Capacity -->
-				<div class="row">
+				<!-- Battery capacity -->
+				<div class="row sub-section">
 					<div class="col-md-12"><h4>Battery capacity</h4></div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<div class="row graph-row">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
 									<div class="input-group">
-										<span class="input-group-addon">KWHr</span>
-										<input class="coupled-input form-control" type=number placeholder="Battery capacity (KWHr)" />
+										<input class="coupled-input form-control" type=number placeholder="Battery capacity" />
+										<span class="input-group-addon">kwhr</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-8">
 								<div class="chart-group-container">
 									<div class="chart-container"></div>
-									<input id="" class="coupled-input" type="range" min="2000000" max="20000000" step="50000" />
-									<div class="input-value-display" >KWHr <span></span></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" ><span></span> kwhr</div>
 								</div>
 							</div>
 						</div>
@@ -127,6 +133,110 @@
 				</div>
 				<!------------------->
 				
+				<!-- Fuel consumption -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Fuel consumption</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Fuel consumption" />
+										<span class="input-group-addon">km / kwhr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="100" step="0.01" />
+									<div class="input-value-display" ><span></span>km / kwhr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Fuel consumption" />
+										<span class="input-group-addon">km / ltr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="100" step="0.01" />
+									<div class="input-value-display" ><span></span> km / ltr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+				
+				<!-- Battery life -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery life</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Battery life" />
+										<span class="input-group-addon">thousand km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" ><span></span> thousand km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Battery cost -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery cost (current)</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Battery cost" />
+										<span class="input-group-addon">thousand</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" >₹ <span></span> thousand</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
 			</div>
 		</div>
 		<div class="panel panel-default">
