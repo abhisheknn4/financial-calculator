@@ -157,22 +157,21 @@ function drawGraphs(dataId){
 	});
 }
 
-$(document).ready(function(){
-	drawGraphs();
+$(document).ready(function(){	
+	var dataIdSequence = 0;
+	$('.graph-row').each(function(){
+		var self = $(this);
+		self.find('input, .chart-group-container, .chart-container, .input-value-display').attr('data-id', dataIdSequence);
+		dataIdSequence++;
+	});
 	
 	$('.chart-group-container>input').each(function(){
-		var self = $(this);
-		if(typeof self.attr('data-id') != 'undefined'){
-			self.parent().children().each(function(){
-				$(this).attr('data-id', self.attr('data-id'));
-			});
-			
-			if(self.hasClass('coupled-input')){
-				var inputs = $('.coupled-input[data-id='+self.attr('data-id')+']');
-				inputs.attr('min', self.attr('min'));
-				inputs.attr('max', self.attr('max'));
-				inputs.attr('step', self.attr('step'));
-			}
+		var self = $(this);	
+		if(self.hasClass('coupled-input')){
+			var inputs = $('.coupled-input[data-id='+self.attr('data-id')+']');
+			inputs.attr('min', self.attr('min'));
+			inputs.attr('max', self.attr('max'));
+			inputs.attr('step', self.attr('step'));
 		}
 	});
 	
@@ -180,6 +179,8 @@ $(document).ready(function(){
 		var self = $(this);
 		$('input[type=range][data-id='+self.attr('data-id')+']').val(self.attr('range')).change();
 	});
+	
+	drawGraphs();
 });
 
 },{"./math.js":2}]},{},[1]);
