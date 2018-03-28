@@ -11,12 +11,15 @@ input[type=range] {
 	cursor: col-resize;
 }
 
-.row {
-	margin-top: 40px;
+.graph-row>div {
+	height: 164px;
 }
 
-.input-group-addon:last-child {
-	width: 35%;
+.key-input {
+    position: absolute;
+    bottom: 40px;
+    left: 15px;
+    right: 15px;
 }
 
 .chart-group-container {
@@ -24,6 +27,7 @@ input[type=range] {
 	width: 90%;
 	height: 140px;
 	margin: 5%;
+	margin-top: 24px;
 }
 
 .chart-container {

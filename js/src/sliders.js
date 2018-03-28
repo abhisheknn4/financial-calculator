@@ -47,7 +47,7 @@ function getDivs(params){
 	var multiplier = 100/maxValue;
 	
 	return params.data.map(function(o, index){
-		return "<div style=\"width:"+width+"%;\" class=\"column\" range=\""+o.range+"\">\
+		return "<div style=\"width:"+width+"%;\" class=\"column\" data-id=\""+params.dataId+"\" range=\""+o.range+"\">\
 			<div style=\"bottom:"+(o.val*multiplier)+"%;\" class=\"column-value-display "+((index==0 || index==params.data.length-1) ? "column-value-display-terminal" : "")+"\" value=\""+o.val+"\">₹ "+o.val+"</div>\
 			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
@@ -107,13 +107,14 @@ function setValueDisplay(dataId){
 
 function drawGraph(params){
 	if(params.graph.attr('data-id') != params.changedInputDataId){
-		var numSteps = params.numSteps || 81;
+		var numSteps = params.numSteps || 21;
 		params.graph.html(getDivs({
 			data: getData({
 				numSteps: numSteps,
 				input: params.targetInput,
 				variateKey: params.variateKey
-			})
+			}),
+			dataId: params.graph.attr('data-id')
 		}));
 		setActiveBar(params.graph.attr('data-id'));
 	}
@@ -148,5 +149,10 @@ $(document).ready(function(){
 				inputs.attr('step', self.attr('step'));
 			}
 		}
+	});
+	
+	$('.chart-container').on('click', '.column', function() {
+		var self = $(this);
+		$('input[type=range][data-id='+self.attr('data-id')+']').val(self.attr('range')).change();
 	});
 });
