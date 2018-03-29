@@ -88,7 +88,8 @@ input[type=range] {
 	bottom: 0;
 }
 
-.chart-container .column-value-display {
+.chart-container .column-value-display,
+.chart-container .column-value-display-terminal {
 	display: none;
 	position: absolute;
 	z-index: 1;
@@ -97,21 +98,17 @@ input[type=range] {
 	left: 50%;
 	margin-left: -50px;
 }
-
 .chart-container .column-value-display-terminal {
 	display: block;
 }
-
+.chart-container .column.active .column-value-display-terminal {
+	display: none;
+}
 .chart-container .column.active .column-value-display {
 	display: block;
 }
-
-.chart-container .column:hover .column-value-display {
-	display: block;
-	background: white;
-	z-index: 2;
-	border-radius: 6px;
-	color: #82b974;
+.chart-container .column.adjacent .column-value-display-terminal {
+	display: none;
 }
 
 .input-value-display {

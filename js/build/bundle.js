@@ -25,41 +25,19 @@ module.exports = {
 },{}],3:[function(require,module,exports){
 var math = require("./math.js");
 
-var changeHandlerStateKey = "lastHandledValue";
-
+var jqWin = $(window);
 function isScrolledIntoView(elem){
-	var docViewTop = $(window).scrollTop();
-	var docViewBottom = docViewTop + $(window).height();
-
+	var docViewTop = jqWin.scrollTop();
+	var docViewBottom = docViewTop + jqWin.height();
 	var elemTop = elem.offset().top;
 	var elemBottom = elemTop + elem.height();
-
 	return (elemBottom <= docViewBottom && elemBottom >= docViewTop) || 
 		(elemTop <= docViewBottom && elemTop >= docViewTop);
 }
 
-function changeHandler(elem){
-	if(elem.val() != elem.attr(changeHandlerStateKey)){
-		var dataId = elem.attr('data-id');
-		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
-		$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
-		
-		var emi = math.getEmi();
-		$('#calculated-emi').text(emi);
-		drawGraphs(dataId);
-		setActiveBar(dataId);
-		setValueDisplay(dataId);
-		
-		$('.column-value-display').each(function(){
-			var t = $(this);
-			t.text("₹ " + t.attr('value'));
-		});
-		$('.column.active .column-value-display').text("₹ " + emi);
-	}
-}
 
-/***********Charts*************/
 
+/* Returns div bars for a specific graph area */
 function getDivs(params){
 	var totalColumns = params.data.length;
 	var width = 100/totalColumns;
@@ -71,13 +49,17 @@ function getDivs(params){
 	var multiplier = 100/maxValue;
 	
 	return params.data.map(function(o, index){
+		var isTerminal = index==0 || index==params.data.length-1;
+		var heightPercent = o.val*multiplier;
 		return "<div style=\"width:"+width+"%;\" class=\"column\" data-id=\""+params.dataId+"\" range=\""+o.range+"\">\
-			<div style=\"bottom:"+(o.val*multiplier)+"%;\" class=\"column-value-display "+((index==0 || index==params.data.length-1) ? "column-value-display-terminal" : "")+"\" value=\""+o.val+"\">₹ "+o.val+"</div>\
-			<div style=\"height:"+(o.val*multiplier)+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
+			<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>\
+			"+(isTerminal ? "<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display-terminal\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>" : "")+"\
+			<div style=\"height:"+heightPercent+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>\
 		</div>"
 	});
 }
 
+/* Computes (x,y) coordinates to be plotted for a specific variate */
 function getData(params){
 	var minValue = parseFloat(params.input.attr('min'));
 	var maxValue = parseFloat(params.input.attr('max'));
@@ -100,6 +82,7 @@ function getData(params){
 	return range;
 }
 
+/* Sets the active bar (i.e. the one which includes the current input value) for a specific graph area */
 function setActiveBar(dataId){
 	var graph = $('.chart-container[data-id='+dataId+']');
 	var bars = graph.children();
@@ -110,11 +93,16 @@ function setActiveBar(dataId){
 		var ratio = (input.val() - minValue) / (maxValue - minValue);
 		var targetBarId = Math.min(Math.floor(ratio * bars.length), bars.length - 1);
 	
-		$('.chart-container[data-id='+dataId+'] .active').removeClass('active');
+		graph.find('.active').removeClass('active');
+		graph.find('.adjacent').removeClass('adjacent');
+		
 		$(bars[targetBarId]).addClass('active');
+		if(targetBarId>0) $(bars[targetBarId-1]).addClass('adjacent');
+		if(targetBarId<bars.length-1) $(bars[targetBarId+1]).addClass('adjacent');
 	}
 }
 
+/* Update the displayed input value corresponding to a slider */
 function setValueDisplay(dataId){
 	var input = $('input[type=range][data-id='+dataId+']');
 	var valueDisplay = input.parent().children('.input-value-display');
@@ -152,10 +140,11 @@ function drawGraph(params, delayed){
 	}
 }
 
-function drawGraphs(dataId, delayed){
+function drawGraphs(params){
+	params = params || {};
 	$('.chart-group-container').each(function(){
 		var self = $(this);
-		if(self.attr('data-id') != dataId){
+		if(self.attr('data-id') != params.dataId && (!params.context || self.attr('context') == params.context)){
 			drawGraph({
 				graph: self.children('.chart-container'),
 				targetInput: self.children('input[type=range]'),
@@ -169,7 +158,9 @@ $(document).ready(function(){
 	var dataIdSequence = 0;
 	$('.graph-row').each(function(){
 		var self = $(this);
-		self.find('input, .chart-group-container, .chart-container, .input-value-display').attr('data-id', dataIdSequence);
+		self.find('input, .chart-group-container, .chart-container, .input-value-display')
+			.attr('data-id', dataIdSequence)
+			.attr('context', self.attr('context'));
 		dataIdSequence++;
 	});
 	
@@ -190,6 +181,25 @@ $(document).ready(function(){
 	
 	drawGraphs();
 	
+	var changeHandlerStateKey = "lastHandledValue";
+	function changeHandler(elem){
+		if(elem.val() != elem.attr(changeHandlerStateKey)){
+			var dataId = elem.attr('data-id');
+			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
+			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
+		
+			var emi = math.getEmi();
+			$('#calculated-emi').text(emi);
+			drawGraphs({
+				dataId: dataId,
+				context: elem.attr('context')
+			});
+			setActiveBar(dataId);
+			setValueDisplay(dataId);
+		
+			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(emi);
+		}
+	}
 	$(".coupled-input").change(function(){
 		changeHandler($(this));
 	});
