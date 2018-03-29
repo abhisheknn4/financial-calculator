@@ -10,8 +10,6 @@ function isScrolledIntoView(elem){
 		(elemTop <= docViewBottom && elemTop >= docViewTop);
 }
 
-
-
 /* Returns div bars for a specific graph area */
 function getDivs(params){
 	var totalColumns = params.data.length;
