@@ -44,9 +44,8 @@
 
 <div id="top-values">
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-3"><h3>NPV (Electric): <span></span></h3></div>
-			<div class="col-sm-3"><h3>NPV (Fossil): <span></span></h3></div>
+		<div class="row text-center">
+			<div id="net-savings" class="col-sm-6"><h3>Savings: ₹ <span></span></h3></div>
 			<div class="col-sm-6"><h3>Payback Period (months): <span></span></h3></div>
 		</div>
 	</div>
@@ -65,7 +64,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="VCOE">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -86,7 +85,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="VCOF">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -115,7 +114,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -143,7 +142,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="VM">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -163,7 +162,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="VDM">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -191,7 +190,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -219,7 +218,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -253,7 +252,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="DR">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -281,7 +280,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="DRD">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -309,7 +308,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="VDU">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -343,7 +342,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="FPE">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -371,7 +370,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="FLR">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -399,7 +398,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="FLT">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -427,7 +426,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="FDE">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -447,7 +446,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="FDD">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -475,7 +474,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="FRI">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -503,7 +502,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='global'>
+						<div class="row graph-row" context='sv-calc' variate-key="FIF">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label></label>
@@ -531,7 +530,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="FBR">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -565,7 +564,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="RER">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -586,7 +585,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="RFR">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -615,7 +614,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="REE">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -635,7 +634,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="RFE">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -669,7 +668,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="MEC">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -690,7 +689,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="MFC">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -719,7 +718,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="row graph-row" context='electric'>
+						<div class="row graph-row" context='sv-calc' variate-key="MEO">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Electric</label>
@@ -740,7 +739,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="row graph-row" context='fossil'>
+						<div class="row graph-row" context='sv-calc' variate-key="MFO">
 							<div class="col-md-4">
 								<div class="key-input">
 									<label>Fossil</label>
@@ -765,60 +764,6 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="row graph-row" context='electric'>
-		<div class="col-md-4">
-			<div class="input-group">
-				<input class="coupled-input form-control" type=number />
-				<span class="input-group-addon" >years</span>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="chart-group-container" variate-key="years">
-				<div class="chart-container"></div>
-				<input id="input-years" class="coupled-input" type="range" min="1" max="100" step="1" />
-				<div class="input-value-display" ><span></span> years</div>
-			</div>
-		</div>
-	</div>
-	<div class="row graph-row" context='electric'>
-		<div class="col-md-4">
-			<div class="input-group">
-				<input class="coupled-input form-control" type=number />
-				<span class="input-group-addon" >₹</span>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="chart-group-container" variate-key="principle">
-				<div class="chart-container"></div>
-				<input id="input-principle" class="coupled-input" type="range" min="1000" max="15000" step="100" />
-				<div class="input-value-display" >₹ <span></span></div>
-			</div>
-		</div>
-	</div>
-	<div class="row graph-row" context='electric'>
-		<div class="col-md-4">
-			<div class="input-group">
-				<input class="coupled-input form-control" type=number />
-				<span class="input-group-addon" >% per annum</span>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="chart-group-container" variate-key="interest">
-				<div class="chart-container"></div>
-				<input id="input-interest-rate" class="coupled-input" type="range" min="1" max="20" step="0.01" />
-				<div class="input-value-display" ><span></span> %</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			EMI: ₹<span id="calculated-emi"></span>
-		</div>
-	</div>
-	
-</div>
-
 </body>
 <!-- JS Libs -->
 <script src="/js/build/lib.js?v=0.03"></script>

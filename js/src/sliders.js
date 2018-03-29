@@ -21,11 +21,12 @@ function getDivs(params){
 	params.data.forEach(function(o){
 		if(o.val > maxValue) maxValue = o.val;
 	});
-	var multiplier = 100/maxValue;
+	var multiplier = Math.abs(100/maxValue);
 	
 	return params.data.map(function(o, index){
 		var isTerminal = index==0 || index==params.data.length-1;
-		var heightPercent = o.val*multiplier;
+		var heightPercent = Math.max(0, o.val*multiplier);
+		
 		return "<div style=\"width:"+width+"%;\" class=\"column\" data-id=\""+params.dataId+"\" range=\""+o.range+"\">\
 			<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>\
 			"+(isTerminal ? "<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display-terminal\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>" : "")+"\
@@ -51,7 +52,7 @@ function getData(params){
 		
 		range.push({
 			range: roundX,
-			val: math.getEmi(variateBlock)
+			val: math.getSavings(variateBlock)
 		});
 	}
 	return range;
@@ -103,7 +104,7 @@ function drawGraph(params, delayed){
 			data: getData({
 				numSteps: numSteps,
 				input: params.targetInput,
-				variateKey: params.variateKey
+				variateKey: params.targetInput.attr('variate-key')
 			}),
 			dataId: selfDataId
 		}));
@@ -122,8 +123,7 @@ function drawGraphs(params){
 		if(self.attr('data-id') != params.dataId && (!params.context || self.attr('context') == params.context)){
 			drawGraph({
 				graph: self.children('.chart-container'),
-				targetInput: self.children('input[type=range]'),
-				variateKey: self.attr('variate-key'),
+				targetInput: self.children('input[type=range]')
 			});
 		}
 	});
@@ -135,7 +135,8 @@ $(document).ready(function(){
 		var self = $(this);
 		self.find('input, .chart-group-container, .chart-container, .input-value-display')
 			.attr('data-id', dataIdSequence)
-			.attr('context', self.attr('context'));
+			.attr('context', self.attr('context'))
+			.attr('variate-key', self.attr('variate-key'));
 		dataIdSequence++;
 	});
 	
@@ -163,8 +164,8 @@ $(document).ready(function(){
 			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		
-			var emi = math.getEmi();
-			$('#calculated-emi').text(emi);
+			var savings = math.getSavings();
+			$('#net-savings span').text(savings);
 			drawGraphs({
 				dataId: dataId,
 				context: elem.attr('context')
@@ -172,7 +173,7 @@ $(document).ready(function(){
 			setActiveBar(dataId);
 			setValueDisplay(dataId);
 		
-			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(emi);
+			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(savings);
 		}
 	}
 	$(".coupled-input").change(function(){
@@ -185,5 +186,15 @@ $(document).ready(function(){
 		$('input[type=range]').each(function(){
 			setValueDisplay($(this).attr('data-id'));
 		});
+	});
+	
+	$('#net-savings span').text(math.getSavings());
+	
+	/* Constraint setting */
+	$("input[type=range][variate-key=VDU]").change(function(){
+		var newValue = $(this).val();
+		var loanTenureInput = $("input[variate-key=FLT]");
+		loanTenureInput.attr('max', newValue);
+		loanTenureInput.val(Math.min(loanTenureInput.val(), newValue)).change();
 	});
 });
