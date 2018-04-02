@@ -97,7 +97,7 @@ function drawGraph(params, delayed){
 	clearTimeout(drawTimeOuts[selfDataId]);
 	/* Update only those graphs which are visible on screen */
 	if(isScrolledIntoView(params.graph) || delayed){
-		var numSteps = params.numSteps || 21;
+		var numSteps = params.numSteps || 31;
 		params.graph.html(getDivs({
 			data: getData({
 				numSteps: numSteps,

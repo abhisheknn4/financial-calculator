@@ -22,6 +22,8 @@ var variableList = [
 	'MEO', // Other operational cost
 	'FDE', // Depreciation rate
 	'FBR', // Battery price reduction rate
+	'VBL', // Battery life
+	'VBCO', // Current battery cost
 	
 	/* Fossil */
 	'VCOF', // Vehicle cost (fossil)
@@ -33,8 +35,6 @@ var variableList = [
 	'FDD', // Depreciation rate
 ]
 
-var vehicleCostMultiplier = 100*1000;
-
 var variables = {};
 $(document).ready(function(){
 	variableList.forEach(function(varName){
@@ -44,7 +44,7 @@ $(document).ready(function(){
 
 function getEmi(params, vehicleType, numMonth){
 	if(numMonth > params.FLT*12) return 0;
-	principle = (vehicleType == 'e' ? params.VCOE : params.VCOF) * vehicleCostMultiplier * (1-(params.FPE/100));
+	principle = (vehicleType == 'e' ? params.VCOE : params.VCOF) * (1-(params.FPE/100));
 	interest = params.FLR / 1200;
 	var months = params.FLT * 12;
 	var powerVal = Math.pow(1+interest, months);
@@ -60,7 +60,7 @@ function getPviElectric(params, i){
 }
 
 function getSalvageElectric(params){
-	return params.VCOE * vehicleCostMultiplier * Math.pow(1 - (params.FDE/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
+	return params.VCOE * Math.pow(1 - (params.FDE/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
 }
 
 function getPviFossil(params, i){
@@ -72,25 +72,37 @@ function getPviFossil(params, i){
 }
 
 function getSalvageFossil(params){
-	return params.VCOF * vehicleCostMultiplier * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
+	return params.VCOF * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
+}
+
+function getBatteryReplacementCost(params, i){
+	var friBlock = Math.pow(1+(params.FRI/1200), i);
+	var fbrBlock = Math.pow(1-(params.FBR/1200), i);
+	return params.VBCO * fbrBlock / friBlock;
 }
 
 module.exports = {
 	getSavings: function(params){
 		params = params || {};
 		Object.keys(variables).forEach(function(varName){
-			params[varName] = parseFloat(issetOrElse(params[varName], variables[varName].val()));
+			params[varName] = parseFloat(issetOrElse(params[varName], variables[varName].val())) * (parseInt(variables[varName].attr('scale')) || 1);
 		});
+		
+		var monthlyKm = params.DR * params.DRD;
+		var availableBatteryLife = params.VBL;
 
 		var delta = 0;
 		for(var i=1; i<=params.VDU*12; i++){
 			delta += getPviFossil(params, i) - getPviElectric(params, i);
+			if(availableBatteryLife <= 0){
+				delta -= getBatteryReplacementCost(params, i);
+				availableBatteryLife = params.VBL;
+			}
+			availableBatteryLife -= monthlyKm;
 		}
 		
 		/* Salvage */
 		delta += getSalvageFossil(params) - getSalvageElectric(params);
-		
-		// TODO Battery cost
 		
 		return Math.round(delta);
 	}
