@@ -7,7 +7,7 @@
 
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="TODO"/>
-    <meta property="og:title" content="TODO"/>
+    <meta property="og:title" content="EV Calculator"/>
     <meta property="og:image" content="TODO"/>
     <meta property="og:description" content="TODO"/>
     <meta property="fb:admins" content="TODO"/>
@@ -15,7 +15,7 @@
     <meta name="keywords" content="TODO"/>
     <meta name="description" content="TODO"/>
 
-    <title>TODO</title>
+    <title>EV Calculator</title>
 
     <link rel="icon" type="image/png" sizes="192x192" href="TODO">
     <!--[if IE]>
@@ -38,7 +38,12 @@
 	<!------------------------------------>
     
     <link rel="stylesheet" href="/style/lib.css?v=0.0">
-    <style>body {
+    <style>/* 
+	Theme-color-light: 82b974
+	Theme-color-dark: 56a243
+*/
+
+body {
 	font-family: 'Nunito', sans-serif;
 }
 
@@ -46,15 +51,988 @@ body, html {
 	/* Disables pull-to-refresh */
 	overscroll-behavior-y: none;
 }
+
+input[type=range] {
+	cursor: col-resize;
+}
+
+.main-container {
+	padding-top: 72px;
+}
+
+.sub-section {
+	margin-top: 15px;
+	border-top: 1px solid #ddd
+}
+.sub-section h4 {
+	color: #56a243;
+}
+.sub-section:first-child {
+	border-top: 0;
+}
+
+#top-values {
+	left: 0;
+	right: 0;
+	z-index: 99;
+	height: 67px;
+	top: 0;
+	position: fixed;
+}
+#top-values>div {
+	background: #f5f5f5;
+	border-bottom: 1px solid #ddd;
+	height: 100%;
+}
+
+.graph-row>div {
+	height: 164px;
+}
+
+.key-input {
+    position: absolute;
+    bottom: 40px;
+    left: 15px;
+    right: 15px;
+}
+
+.chart-group-container {
+	position: relative;
+	width: 90%;
+	height: 140px;
+	margin: 5%;
+	margin-top: 24px;
+}
+
+.chart-container {
+	width: 100%;
+	height: 100px;
+}
+
+.chart-container .column {
+	float: left;
+	height: 100%;
+	background: #ffffff;
+	border-right: 1px solid #ffffff;
+	position: relative;
+	cursor: pointer;
+}
+
+.chart-container .column.active .column-value {
+	background: #82b974;
+}
+
+.chart-container .column-value {
+	width: 100%;
+	background: #e1e1e1;
+	position: absolute;
+	bottom: 0;
+}
+
+.chart-container .column-value-display,
+.chart-container .column-value-display-terminal {
+	display: none;
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	text-align: center;
+	left: 50%;
+	margin-left: -50px;
+}
+.chart-container .column-value-display-terminal {
+	display: block;
+}
+.chart-container .column.active .column-value-display-terminal {
+	display: none;
+}
+.chart-container .column.active .column-value-display {
+	display: block;
+}
+.chart-container .column.adjacent .column-value-display-terminal {
+	display: none;
+}
+
+.input-value-display {
+	position: absolute;
+	bottom: 0;
+	width: auto;
+	height: 24px;
+	padding: 3px 16px;
+	white-space: nowrap;
+}
+
+/* Slider styles */
+
+input[type=range] {
+	-webkit-appearance: none;
+	width: calc(100% + 32px);
+	margin-left: -16px;
+	background: transparent;
+	padding-bottom: 40px;
+	position: absolute;
+	bottom: -1px;
+	z-index: 1;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+}
+
+input[type=range]:focus {
+	outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+	width: 100%;
+	cursor: pointer;
+
+	/* Hides the slider so custom styles can be added */
+	background: transparent; 
+	border-color: transparent;
+	color: transparent;
+}
+
+/* Thumb */
+
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	border: 0;
+	margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+	width: 0; 
+	height: 0; 
+	border-left: 16px solid transparent;
+	border-right: 16px solid transparent;
+	border-bottom: 16px solid #82b974;
+	background: transparent;
+	border-radius: 0;
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+	border: 0;
+	width: 0; 
+	height: 0; 
+	border-left: 16px solid transparent;
+	border-right: 16px solid transparent;
+	border-bottom: 16px solid #82b974;
+	background: transparent;
+	border-radius: 0;
+	padding-top: 13px;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+	border: 0;
+	width: 0; 
+	height: 0; 
+	border-left: 16px solid transparent;
+	border-right: 16px solid transparent;
+	border-bottom: 16px solid #82b974;
+	background: transparent;
+	border-radius: 0;
+	margin-top: 4px;
+}
+
+/* Track */
+
+input[type=range]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 0px;
+	cursor: col-resize;
+	background: #cecece;
+	border-radius: 1.3px;
+	border: 0;
+}
+input[type=range]::-moz-range-track {
+	width: 100%;
+	height: 0px;
+	cursor: col-resize;
+	background: #cecece;
+	border-radius: 1.3px;
+	border: 0;
+}
+input[type=range]::-ms-track {
+	width: 100%;
+	height: 0px;
+	cursor: col-resize;
+	background: transparent;
+	border-color: transparent;
+	border-width: 16px 0;
+	color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+	background: #cecece;
+	border: 0;
+	border-radius: 2.6px;
+}
+input[type=range]::-ms-fill-upper {
+	background: #cecece;
+	border: 0;
+	border-radius: 2.6px;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+	background: #cecece;
+}
+input[type=range]:focus::-ms-fill-upper {
+	background: #cecece;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+	background: #cecece;
+}
+input[type=range]:focus::-moz-range-track {
+	background: #cecece;
+}
+
+/*****************/
 </style>
 </head>
-<div>Hello World!</div>
+<body>
 
-<!-- JS Libs -->
-<script src="/js/build/lib.js?v=0.0"></script>
-<script>(function(){function f(d,e,g){function h(b,a){if(!e[b]){if(!d[b]){var c="function"==typeof require&&require;if(!a&&c)return c(b,!0);if(k)return k(b,!0);a=Error("Cannot find module '"+b+"'");throw a.code="MODULE_NOT_FOUND",a;}a=e[b]={exports:{}};d[b][0].call(a.exports,function(a){var c=d[b][1][a];return h(c?c:a)},a,a.exports,f,d,e,g)}return e[b].exports}for(var k="function"==typeof require&&require,c=0;c<g.length;c++)h(g[c]);return h}return f})()({1:[function(f,d,e){"serviceWorker"in navigator&&navigator.serviceWorker.register("/sw.js").catch(function(d){console.err("Error registering service worker",
-d)})},{}]},{},[1]);
-</script>
+<div id="top-values">
+	<div class="container-fluid">
+		<div class="row text-center">
+			<div id="net-savings" class="col-sm-6"><h3>Savings: ₹ <span></span></h3></div>
+			<div class="col-sm-6"><h3>Payback Period (months): <span></span></h3></div>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid main-container">
+	
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Vehicle Selection</h3></div>
+			<div class="panel-body">
+				
+				<!-- Bus cost -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Bus cost</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="VCOE">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Bus cost" />
+										<span class="input-group-addon">lakh</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="20" max="200" step="0.5" />
+									<div class="input-value-display" >₹ <span></span> lakh</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="VCOF">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Bus cost" />
+										<span class="input-group-addon">lakh</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="20" max="200" step="0.5" />
+									<div class="input-value-display" >₹ <span></span> lakh</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+				
+				<!-- Battery capacity -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery capacity</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Battery capacity" />
+										<span class="input-group-addon">kwhr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" ><span></span> kwhr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Fuel consumption -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Fuel consumption</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="VM">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Fuel consumption" />
+										<span class="input-group-addon">kwhr / km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="10" step="0.01" />
+									<div class="input-value-display" ><span></span>kwhr / km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="VDM">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Fuel consumption" />
+										<span class="input-group-addon">km / ltr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="20" step="0.01" />
+									<div class="input-value-display" ><span></span> km / ltr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+				
+				<!-- Battery life -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery life</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Battery life" />
+										<span class="input-group-addon">thousand km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" ><span></span> thousand km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Battery cost -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery cost (current)</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="TODO">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Battery cost" />
+										<span class="input-group-addon">thousand</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="100" max="1000" step="5" />
+									<div class="input-value-display" >₹ <span></span> thousand</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Usage Data</h3></div>
+			<div class="panel-body">
+				
+				<!-- Daily run -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Daily run</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="DR">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Daily run" />
+										<span class="input-group-addon">km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="10" max="1000" step="5" value=250 />
+									<div class="input-value-display" ><span></span> km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Running days -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Running days</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="DRD">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Running days" />
+										<span class="input-group-addon">days</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="30" step="1" value=25 />
+									<div class="input-value-display" ><span></span> days</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Usage years -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Usage years</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="VDU">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Running days" />
+										<span class="input-group-addon">years</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="10" step="1" value=7 />
+									<div class="input-value-display" ><span></span> years</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Capital Costs</h3></div>
+			<div class="panel-body">
+				
+				<!-- Down payment -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Down payment</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FPE">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Down payment" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="100" step="1" value=30 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Loan interest rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Loan interest rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FLR">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Loan interest rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.05" value=10 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Loan tenure -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Loan tenure</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FLT">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Loan tenure" />
+										<span class="input-group-addon">years</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="1" max="10" step="1" value=5 />
+									<div class="input-value-display" ><span></span> years</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Depreciation rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Depreciation rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FDE">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Depreciation rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="30" step="0.5" value=10 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FDD">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Depreciation rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="30" step="0.5" value=10 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+				
+				<!-- Investment savings rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Investment savings rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FRI">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Investment savings rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="-5" max="20" step="0.05" value=8 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Inflation rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Inflation rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FIF">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label></label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Inflation rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="-5" max="20" step="0.05" value=4 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+				<!-- Battery price reduction rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Battery price reduction rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="FBR">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Battery price reduction rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.5" value=8 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!------------------->
+				
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Running Costs</h3></div>
+			<div class="panel-body">
+			
+				<!-- Fuel price -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Fuel price</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="RER">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Electricity rate" />
+										<span class="input-group-addon">per kwhr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="2" max="20" step="0.1" value=8 />
+									<div class="input-value-display" >₹ <span></span> per kwhr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="RFR">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Fossil price" />
+										<span class="input-group-addon">per ltr</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="30" max="100" step="0.1" value=60 />
+									<div class="input-value-display" >₹ <span></span> per ltr</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+				
+				<!-- Price escalation rate -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Price escalation rate</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="REE">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Electricity price escalation rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="-5" max="20" step="0.5" value=3 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="RFE">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<input class="coupled-input form-control" type=number placeholder="Fossil price escalation rate" />
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="-5" max="20" step="0.5" value=10 />
+									<div class="input-value-display" ><span></span> %</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+			
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Maintenance</h3></div>
+			<div class="panel-body">
+			
+				<!-- Maintenance cost -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Maintenance cost</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="MEC">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Maintenance cost" />
+										<span class="input-group-addon">per km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.1" value=3 />
+									<div class="input-value-display" >₹ <span></span> per km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="MFC">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Maintenance cost" />
+										<span class="input-group-addon">per km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.1" value=10 />
+									<div class="input-value-display" >₹ <span></span> per km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+			
+				<!-- Other operating expenses -->
+				<div class="row sub-section">
+					<div class="col-md-12"><h4>Other operating expenses</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="MEO">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Electric</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Other expenses" />
+										<span class="input-group-addon">per km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.1" value=0 />
+									<div class="input-value-display" >₹ <span></span> per km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row graph-row" context='sv-calc' variate-key="MFO">
+							<div class="col-md-4">
+								<div class="key-input">
+									<label>Fossil</label>
+									<div class="input-group">
+										<span class="input-group-addon">₹</span>
+										<input class="coupled-input form-control" type=number placeholder="Other expenses" />
+										<span class="input-group-addon">per km</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="chart-group-container">
+									<div class="chart-container"></div>
+									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.1" value=0 />
+									<div class="input-value-display" >₹ <span></span> per km</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------->
+			</div>
+		</div>
+	</div>
 </body>
+<!-- JS Libs -->
+<script src="/js/build/lib.js?v=0.03"></script>
+<script>var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.ASSUME_ES5=!1;$jscomp.ASSUME_NO_NATIVE_MAP=!1;$jscomp.ASSUME_NO_NATIVE_SET=!1;$jscomp.defineProperty=$jscomp.ASSUME_ES5||"function"==typeof Object.defineProperties?Object.defineProperty:function(a,b,c){a!=Array.prototype&&a!=Object.prototype&&(a[b]=c.value)};$jscomp.getGlobal=function(a){return"undefined"!=typeof window&&window===a?a:"undefined"!=typeof global&&null!=global?global:a};$jscomp.global=$jscomp.getGlobal(this);$jscomp.SYMBOL_PREFIX="jscomp_symbol_";
+$jscomp.initSymbol=function(){$jscomp.initSymbol=function(){};$jscomp.global.Symbol||($jscomp.global.Symbol=$jscomp.Symbol)};$jscomp.Symbol=function(){var a=0;return function(b){return $jscomp.SYMBOL_PREFIX+(b||"")+a++}}();
+$jscomp.initSymbolIterator=function(){$jscomp.initSymbol();var a=$jscomp.global.Symbol.iterator;a||(a=$jscomp.global.Symbol.iterator=$jscomp.global.Symbol("iterator"));"function"!=typeof Array.prototype[a]&&$jscomp.defineProperty(Array.prototype,a,{configurable:!0,writable:!0,value:function(){return $jscomp.arrayIterator(this)}});$jscomp.initSymbolIterator=function(){}};$jscomp.arrayIterator=function(a){var b=0;return $jscomp.iteratorPrototype(function(){return b<a.length?{done:!1,value:a[b++]}:{done:!0}})};
+$jscomp.iteratorPrototype=function(a){$jscomp.initSymbolIterator();a={next:a};a[$jscomp.global.Symbol.iterator]=function(){return this};return a};$jscomp.iteratorFromArray=function(a,b){$jscomp.initSymbolIterator();a instanceof String&&(a+="");var c=0,e={next:function(){if(c<a.length){var g=c++;return{value:b(g,a[g]),done:!1}}e.next=function(){return{done:!0,value:void 0}};return e.next()}};e[Symbol.iterator]=function(){return e};return e};
+$jscomp.polyfill=function(a,b,c,e){if(b){c=$jscomp.global;a=a.split(".");for(e=0;e<a.length-1;e++){var g=a[e];g in c||(c[g]={});c=c[g]}a=a[a.length-1];e=c[a];b=b(e);b!=e&&null!=b&&$jscomp.defineProperty(c,a,{configurable:!0,writable:!0,value:b})}};$jscomp.polyfill("Array.prototype.keys",function(a){return a?a:function(){return $jscomp.iteratorFromArray(this,function(a){return a})}},"es6","es3");
+$jscomp.findInternal=function(a,b,c){a instanceof String&&(a=String(a));for(var e=a.length,g=0;g<e;g++){var l=a[g];if(b.call(c,l,g,a))return{i:g,v:l}}return{i:-1,v:void 0}};$jscomp.polyfill("Array.prototype.find",function(a){return a?a:function(a,c){return $jscomp.findInternal(this,a,c).v}},"es6","es3");
+(function(){function a(b,c,e){function g(h,f){if(!c[h]){if(!b[h]){var p="function"==typeof require&&require;if(!f&&p)return p(h,!0);if(l)return l(h,!0);f=Error("Cannot find module '"+h+"'");throw f.code="MODULE_NOT_FOUND",f;}f=c[h]={exports:{}};b[h][0].call(f.exports,function(f){var a=b[h][1][f];return g(a?a:f)},f,f.exports,a,b,c,e)}return c[h].exports}for(var l="function"==typeof require&&require,m=0;m<e.length;m++)g(e[m]);return g}return a})()({1:[function(a,b,c){a("./sliders.js");"serviceWorker"in
+navigator&&navigator.serviceWorker.register("/sw.js").catch(function(a){console.err("Error registering service worker",a)})},{"./sliders.js":3}],2:[function(a,b,c){function e(a,b,c){if(c>12*a.FLT)return 0;principle=1E5*("e"==b?a.VCOE:a.VCOF)*(1-a.FPE/100);interest=a.FLR/1200;a=Math.pow(1+interest,12*a.FLT);return principle*interest*a/(a-1)}function g(a,b){var f=e(a,"e",b);return(a.DR*a.DRD*(a.VM*a.RER*Math.pow(1+a.REE/1200,b)+(a.MEC+a.MEO)*Math.pow(1+a.FIF/1200,b))+f)/Math.pow(1+a.FRI/1200,b)}function l(a,
+b){var f=e(a,"f",b);return(a.DR*a.DRD*(a.RFR*Math.pow(1+a.RFE/1200,b)/a.VDM+(a.MFC+a.MFO)*Math.pow(1+a.FIF/1200,b))+f)/Math.pow(1+a.FRI/1200,b)}var m="DR DRD VDU FLR FLT FPE FIF FRI VCOE VM RER REE MEC MEO FDE FBR VCOF VDM RFR RFE MFC MFO FDD".split(" "),h={};$(document).ready(function(){m.forEach(function(a){h[a]=$(".graph-row[variate-key\x3d"+a+"] input[type\x3drange]")})});b.exports={getSavings:function(a){a=a||{};Object.keys(h).forEach(function(b){var k=a,c=parseFloat,d=a[b],t=h[b].val();k[b]=
+c("undefined"!=typeof d?d:t)});for(var b=0,c=1;c<=12*a.VDU;c++)b+=l(a,c)-g(a,c);b+=1E5*a.VCOF*Math.pow(1-a.FDD/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU)-1E5*a.VCOE*Math.pow(1-a.FDE/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU);return Math.round(b)}}},{}],3:[function(a,b,c){function e(a){var b=100/a.data.length,d=-Infinity;a.data.forEach(function(a){a.val>d&&(d=a.val)});var k=Math.abs(100/d);return a.data.map(function(d,c){var n=Math.max(0,d.val*k);return'\x3cdiv style\x3d"width:'+b+'%;" class\x3d"column" data-id\x3d"'+
+a.dataId+'" range\x3d"'+d.range+'"\x3e\x3cdiv style\x3d"bottom:'+n+'%;" class\x3d"column-value-display" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e"+(0==c||c==a.data.length-1?'\x3cdiv style\x3d"bottom:'+n+'%;" class\x3d"column-value-display-terminal" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e":"")+'\x3cdiv style\x3d"height:'+n+'%;" class\x3d"column-value" value\x3d"'+d.val+'"\x3e\x3c/div\x3e\x3c/div\x3e'})}function g(a){var b=parseFloat(a.input.attr("min")),
+d=parseFloat(a.input.attr("max")),k=[],c=parseFloat(a.input.attr("step"));d=(d-b)/a.numSteps;for(var e=0;e<a.numSteps;e++){var g=c*Math.round((e*d+d/2+b)/c),f={};f[a.variateKey]=g;k.push({range:g,val:p.getSavings(f)})}return k}function l(a){var b=$(".chart-container[data-id\x3d"+a+"]"),d=b.children();if(d.length){a=$("input[type\x3drange][data-id\x3d"+a+"]");var c=a.attr("max"),k=a.attr("min");a=(a.val()-k)/(c-k);a=Math.min(Math.floor(a*d.length),d.length-1);b.find(".active").removeClass("active");
+b.find(".adjacent").removeClass("adjacent");$(d[a]).addClass("active");0<a&&$(d[a-1]).addClass("adjacent");a<d.length-1&&$(d[a+1]).addClass("adjacent")}}function m(a){var b=$("input[type\x3drange][data-id\x3d"+a+"]");a=b.parent().children(".input-value-display");a.children("span").text(b.val());var d=a.outerWidth(),c=b.attr("max")-b.attr("min");b=Math.round(b.parent().width()*(b.val()-b.attr("min"))/c-d/2);a.css("left",b+"px")}function h(a,b){var d=a.graph.attr("data-id");clearTimeout(r[d]);var c=
+a.graph,f=q.scrollTop(),k=f+q.height(),n=c.offset().top;c=n+c.height();c<=k&&c>=f||n<=k&&n>=f||b?(a.graph.html(e({data:g({numSteps:a.numSteps||21,input:a.targetInput,variateKey:a.targetInput.attr("variate-key")}),dataId:d})),l(d)):r[d]=setTimeout(h,1E3,a,!0)}function f(a){a=a||{};$(".chart-group-container").each(function(){var b=$(this);b.attr("data-id")==a.dataId||a.context&&b.attr("context")!=a.context||h({graph:b.children(".chart-container"),targetInput:b.children("input[type\x3drange]")})})}var p=
+a("./math.js"),q=$(window),r={};$(document).ready(function(){function a(a){if(a.val()!=a.attr("lastHandledValue")){var b=a.attr("data-id");$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").val(a.val());$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").attr("lastHandledValue",a.val());var d=p.getSavings();$("#net-savings span").text(d);f({dataId:b,context:a.attr("context")});l(b);m(b);$(".graph-row[context\x3d"+a.attr("context")+"] .column.active .column-value-display span").text(d)}}var b=
+0;$(".graph-row").each(function(){var a=$(this);a.find("input, .chart-group-container, .chart-container, .input-value-display").attr("data-id",b).attr("context",a.attr("context")).attr("variate-key",a.attr("variate-key"));b++});$(".chart-group-container\x3einput").each(function(){var a=$(this);if(a.hasClass("coupled-input")){var b=$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]");b.attr("min",a.attr("min"));b.attr("max",a.attr("max"));b.attr("step",a.attr("step"))}});$(".chart-container").on("click",
+".column",function(){var a=$(this);$("input[type\x3drange][data-id\x3d"+a.attr("data-id")+"]").val(a.attr("range")).change()});f();$(".coupled-input").change(function(){a($(this))});$(".coupled-input").on("input",function(){a($(this))});$(document).ready(function(){$("input[type\x3drange]").each(function(){m($(this).attr("data-id"))})});$("#net-savings span").text(p.getSavings());$("input[type\x3drange][variate-key\x3dVDU]").change(function(){var a=$(this).val(),b=$("input[variate-key\x3dFLT]");b.attr("max",
+a);b.val(Math.min(b.val(),a)).change()})})},{"./math.js":2}]},{},[1]);
+</script>
 </html>
 
