@@ -50,7 +50,7 @@ function getData(params){
 		
 		range.push({
 			range: roundX,
-			val: math.getSavings(variateBlock)
+			val: math.getAnswers(variateBlock).savings
 		});
 	}
 	return range;
@@ -162,8 +162,10 @@ $(document).ready(function(){
 			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
 			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		
-			var savings = math.getSavings();
-			$('#net-savings span').text(savings);
+			var answers = math.getAnswers();
+			$('#ans-dump').text(JSON.stringify(answers));
+			
+			$('#net-savings span').text(answers.savings);
 			drawGraphs({
 				dataId: dataId,
 				context: elem.attr('context')
@@ -171,7 +173,7 @@ $(document).ready(function(){
 			setActiveBar(dataId);
 			setValueDisplay(dataId);
 		
-			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(savings);
+			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(answers.savings);
 		}
 	}
 	$(".coupled-input").change(function(){
@@ -186,7 +188,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	$('#net-savings span').text(math.getSavings());
+	$('#net-savings span').text(math.getAnswers().savings);
 	
 	/* Constraint setting */
 	$("input[type=range][variate-key=VDU]").change(function(){

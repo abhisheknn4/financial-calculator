@@ -82,7 +82,7 @@ function getBatteryReplacementCost(params, i){
 }
 
 module.exports = {
-	getSavings: function(params){
+	getAnswers: function(params){
 		params = params || {};
 		Object.keys(variables).forEach(function(varName){
 			params[varName] = parseFloat(issetOrElse(params[varName], variables[varName].val())) * (parseInt(variables[varName].attr('scale')) || 1);
@@ -91,19 +91,35 @@ module.exports = {
 		var monthlyKm = params.DR * params.DRD;
 		var availableBatteryLife = params.VBL;
 
-		var delta = 0;
+		var evCost = params.VCOE * params.FPE/100;
+		var fossilCost = params.VCOF * params.FPE/100;
+		var batteryReplaceMentCost = 0;
+		
 		for(var i=1; i<=params.VDU*12; i++){
-			delta += getPviFossil(params, i) - getPviElectric(params, i);
+			evCost += getPviElectric(params, i);
+			fossilCost += getPviFossil(params, i);
 			if(availableBatteryLife <= 0){
-				delta -= getBatteryReplacementCost(params, i);
+				batteryReplaceMentCost += getBatteryReplacementCost(params, i);
 				availableBatteryLife = params.VBL;
 			}
 			availableBatteryLife -= monthlyKm;
 		}
 		
 		/* Salvage */
-		delta += getSalvageFossil(params) - getSalvageElectric(params);
+		var salvageEv = getSalvageElectric(params);
+		var salvageFossil = getSalvageFossil(params);;
+		evCost -= salvageEv;
+		fossilCost -= salvageFossil;
 		
-		return Math.round(delta);
+		evCost += batteryReplaceMentCost;
+		
+		return {
+			evCost: Math.round(evCost),
+			evSalvage: salvageEv,
+			batteryReplaceMentCost: batteryReplaceMentCost,
+			fossilCost: Math.round(fossilCost),
+			fossilSalvage: salvageFossil,
+			savings: Math.round(fossilCost - evCost)
+		};
 	}
 }
