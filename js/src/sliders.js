@@ -70,7 +70,7 @@ function setActiveBar(dataId){
 		graph.find('.active').removeClass('active');
 		graph.find('.adjacent').removeClass('adjacent');
 		
-		$(bars[targetBarId]).addClass('active');
+		$(bars[targetBarId]).addClass('active').find('.column-value-display span').text($('#net-savings span').text());
 		if(targetBarId>0) $(bars[targetBarId-1]).addClass('adjacent');
 		if(targetBarId<bars.length-1) $(bars[targetBarId+1]).addClass('adjacent');
 	}
