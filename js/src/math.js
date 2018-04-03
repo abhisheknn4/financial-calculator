@@ -70,10 +70,6 @@ function getSalvageFossil(params){
 	return params.VCOF * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
 }
 
-function getBatteryReplacementCost(params, i){
-	return params.VBCO * Math.pow(1-(params.FBR/1200), i);
-}
-
 module.exports = {
 	getAnswers: function(params){
 		params = params || {};
@@ -97,6 +93,8 @@ module.exports = {
 		var batteryReplaceMentCost = 0;
 		var batteryMonths = [];
 		
+		var payback = -1;
+		
 		for(var i=1; i<=params.VDU*12; i++){
 			var friBlock = Math.pow(1+(params.FRI/1200), i);
 		
@@ -109,11 +107,22 @@ module.exports = {
 			}
 			
 			if(availableBatteryLife <= 0){
-				batteryReplaceMentCost += getBatteryReplacementCost(params, i) / friBlock;
+				var batteryEffect = params.VBCO * Math.pow(1-(params.FBR/1200), i) / friBlock;
+				
+				batteryReplaceMentCost += batteryEffect;
+				evCost += batteryEffect;
+				
 				availableBatteryLife = params.VBL;
 				batteryMonths.push(i);
 			}
 			availableBatteryLife -= monthlyKm;
+			
+			if(evCost <= fossilCost && payback == -1){
+				payback = i;
+			}
+			else if(evCost > fossilCost){
+				payback = -1;
+			}
 		}
 		
 		/* Salvage */
@@ -121,8 +130,6 @@ module.exports = {
 		var fossilSalvage = getSalvageFossil(params);;
 		evCost -= evSalvage;
 		fossilCost -= fossilSalvage;
-		
-		evCost += batteryReplaceMentCost;
 		
 		return {
 			emiMonths,
@@ -139,7 +146,8 @@ module.exports = {
 			fossilEmi,
 			fossilSalvage,
 			___s: "",
-			savings: Math.round(fossilCost - evCost)
+			savings: Math.round(fossilCost - evCost),
+			payback
 		};
 	}
 }

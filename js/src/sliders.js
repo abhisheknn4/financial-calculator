@@ -164,7 +164,8 @@ $(document).ready(function(){
 		
 			var answers = math.getAnswers();
 			
-			$('#net-savings span').text(answers.savings);
+			displayAnswers(answers);
+
 			drawGraphs({
 				dataId: dataId,
 				context: elem.attr('context')
@@ -181,21 +182,23 @@ $(document).ready(function(){
 	$(".coupled-input").on("input", function(){
 		changeHandler($(this));
 	});
-	$(document).ready(function(){
-		$('input[type=range]').each(function(){
-			setValueDisplay($(this).attr('data-id'));
-		});
+	
+	$('input[type=range]').each(function(){
+		setValueDisplay($(this).attr('data-id'));
 	});
 	
-	$('#net-savings span').text(math.getAnswers().savings);
+	displayAnswers(math.getAnswers());
 	
 	/* Constraint setting */
 	$("input[type=range][variate-key=VDU]").change(function(){
 		var newValue = $(this).val();
-		var loanTenureInput = $("input[variate-key=FLT]");
+		var loanTenureInput = $("input[type=range][variate-key=FLT]");
 		loanTenureInput.attr('max', newValue);
 		loanTenureInput.val(Math.min(loanTenureInput.val(), loanTenureInput.attr('max'))).change();
-	});
+		
+		setActiveBar(loanTenureInput.attr('data-id'));
+		setValueDisplay(loanTenureInput.attr('data-id'));
+	}).change();
 	
 	$('#debug').click(function(){
 		var answers = math.getAnswers();
@@ -211,3 +214,8 @@ $(document).ready(function(){
 		alert(str);
 	});
 });
+
+function displayAnswers(answers){
+	$('#net-savings span').text(answers.savings);
+	$('#payback-period span').text(answers.payback);
+}
