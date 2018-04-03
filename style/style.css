@@ -17,7 +17,7 @@ input[type=range] {
 }
 
 .main-container {
-	padding-top: 92px;
+	padding-top: 72px;
 }
 
 .sub-section {
@@ -35,7 +35,7 @@ input[type=range] {
 	left: 0;
 	right: 0;
 	z-index: 99;
-	height: 87px;
+	height: 67px;
 	top: 0;
 	position: fixed;
 }

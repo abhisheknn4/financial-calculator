@@ -115,10 +115,10 @@ module.exports = {
 		
 		return {
 			evCost: Math.round(evCost),
-			evSalvage: salvageEv,
-			batteryReplaceMentCost: batteryReplaceMentCost,
+			evSalvage: Math.round(salvageEv),
+			batteryReplaceMentCost: Math.round(batteryReplaceMentCost),
 			fossilCost: Math.round(fossilCost),
-			fossilSalvage: salvageFossil,
+			fossilSalvage: Math.round(salvageFossil),
 			savings: Math.round(fossilCost - evCost)
 		};
 	}

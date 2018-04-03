@@ -163,7 +163,6 @@ $(document).ready(function(){
 			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
 		
 			var answers = math.getAnswers();
-			$('#ans-dump').text(JSON.stringify(answers));
 			
 			$('#net-savings span').text(answers.savings);
 			drawGraphs({
@@ -196,5 +195,16 @@ $(document).ready(function(){
 		var loanTenureInput = $("input[variate-key=FLT]");
 		loanTenureInput.attr('max', newValue);
 		loanTenureInput.val(Math.min(loanTenureInput.val(), newValue)).change();
+	});
+	
+	$('#debug').click(function(){
+		var answers = math.getAnswers();
+		var str = "";
+		
+		Object.keys(answers).forEach(function(key){
+			str += key + " => " + answers[key] + "\n";
+		});
+		
+		alert(str);
 	});
 });

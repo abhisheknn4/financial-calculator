@@ -80,7 +80,7 @@ input[type=range] {
 }
 
 .main-container {
-	padding-top: 92px;
+	padding-top: 72px;
 }
 
 .sub-section {
@@ -98,7 +98,7 @@ input[type=range] {
 	left: 0;
 	right: 0;
 	z-index: 99;
-	height: 87px;
+	height: 67px;
 	top: 0;
 	position: fixed;
 }
@@ -316,11 +316,9 @@ input[type=range]:focus::-moz-range-track {
 <div id="top-values">
 	<div class="container-fluid">
 		<div class="row text-center">
-			<div id="net-savings" class="col-sm-6"><h3>Savings: ₹ <span></span></h3></div>
-			<div class="col-sm-6"><h3>Payback Period (months): <span></span></h3></div>
-		</div>
-		<div class="row text-center">
-			<div id="ans-dump" class="col-sm-12"><h3></h3></div>
+			<div id="net-savings" class="col-sm-5"><h3>Savings: ₹ <span></span></h3></div>
+			<div class="col-sm-5"><h3>Payback Period (months): <span></span></h3></div>
+			<div class="col-sm-2"><h3><button id="debug" class="btn btn-info">Debug</button></h3></div>
 		</div>
 	</div>
 </div>
@@ -629,7 +627,7 @@ input[type=range]:focus::-moz-range-track {
 							<div class="col-md-8">
 								<div class="chart-group-container">
 									<div class="chart-container"></div>
-									<input id="" class="coupled-input" type="range" min="0" max="20" step="0.05" value=10 />
+									<input id="" class="coupled-input" type="range" min="0.01" max="20" step="0.05" value=10 />
 									<div class="input-value-display" ><span></span> %</div>
 								</div>
 							</div>
@@ -1032,15 +1030,16 @@ $jscomp.findInternal=function(a,c,e){a instanceof String&&(a=String(a));for(var 
 (function(){function a(c,e,f){function g(h,b){if(!e[h]){if(!c[h]){var p="function"==typeof require&&require;if(!b&&p)return p(h,!0);if(m)return m(h,!0);b=Error("Cannot find module '"+h+"'");throw b.code="MODULE_NOT_FOUND",b;}b=e[h]={exports:{}};c[h][0].call(b.exports,function(b){var a=c[h][1][b];return g(a?a:b)},b,b.exports,a,c,e,f)}return e[h].exports}for(var m="function"==typeof require&&require,n=0;n<f.length;n++)g(f[n]);return g}return a})()({1:[function(a,c,e){a("./sliders.js");"serviceWorker"in
 navigator&&navigator.serviceWorker.register("/sw.js").catch(function(a){console.err("Error registering service worker",a)})},{"./sliders.js":3}],2:[function(a,c,e){function f(b,a,c){if(c>12*b.FLT)return 0;principle=("e"==a?b.VCOE:b.VCOF)*(1-b.FPE/100);interest=b.FLR/1200;b=Math.pow(1+interest,12*b.FLT);return principle*interest*b/(b-1)}function g(b,a){var c=f(b,"e",a);return(b.DR*b.DRD*(b.VM*b.RER*Math.pow(1+b.REE/1200,a)+(b.MEC+b.MEO)*Math.pow(1+b.FIF/1200,a))+c)/Math.pow(1+b.FRI/1200,a)}function m(b,
 a){var c=f(b,"f",a);return(b.DR*b.DRD*(b.RFR*Math.pow(1+b.RFE/1200,a)/b.VDM+(b.MFC+b.MFO)*Math.pow(1+b.FIF/1200,a))+c)/Math.pow(1+b.FRI/1200,a)}var n="DR DRD VDU FLR FLT FPE FIF FRI VCOE VM RER REE MEC MEO FDE FBR VBL VBCO VCOF VDM RFR RFE MFC MFO FDD".split(" "),h={};$(document).ready(function(){n.forEach(function(a){h[a]=$(".graph-row[variate-key\x3d"+a+"] input[type\x3drange]")})});c.exports={getAnswers:function(a){a=a||{};Object.keys(h).forEach(function(d){var k=a,b=parseFloat,c=a[d],l=h[d].val();
-k[d]=b("undefined"!=typeof c?c:l)*(parseInt(h[d].attr("scale"))||1)});for(var b=a.DR*a.DRD,c=a.VBL,e=a.VCOE*a.FPE/100,k=a.VCOF*a.FPE/100,l=0,d=1;d<=12*a.VDU;d++)e+=g(a,d),k+=m(a,d),0>=c&&(l+=a.VBCO*Math.pow(1-a.FBR/1200,d)/Math.pow(1+a.FRI/1200,d),c=a.VBL),c-=b;b=a.VCOE*Math.pow(1-a.FDE/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU);c=a.VCOF*Math.pow(1-a.FDD/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU);k-=c;e=e-b+l;return{evCost:Math.round(e),evSalvage:b,batteryReplaceMentCost:l,fossilCost:Math.round(k),fossilSalvage:c,
-savings:Math.round(k-e)}}}},{}],3:[function(a,c,e){function f(a){var b=100/a.data.length,d=-Infinity;a.data.forEach(function(a){a.val>d&&(d=a.val)});var k=Math.abs(100/d);return a.data.map(function(d,c){var l=Math.max(0,d.val*k);return'\x3cdiv style\x3d"width:'+b+'%;" class\x3d"column" data-id\x3d"'+a.dataId+'" range\x3d"'+d.range+'"\x3e\x3cdiv style\x3d"bottom:'+l+'%;" class\x3d"column-value-display" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e"+(0==c||c==a.data.length-
-1?'\x3cdiv style\x3d"bottom:'+l+'%;" class\x3d"column-value-display-terminal" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e":"")+'\x3cdiv style\x3d"height:'+l+'%;" class\x3d"column-value" value\x3d"'+d.val+'"\x3e\x3c/div\x3e\x3c/div\x3e'})}function g(a){var b=parseFloat(a.input.attr("min")),d=parseFloat(a.input.attr("max")),k=[],c=parseFloat(a.input.attr("step"));d=(d-b)/a.numSteps;for(var e=0;e<a.numSteps;e++){var f=c*Math.round((e*d+d/2+b)/c),g={};g[a.variateKey]=
-f;k.push({range:f,val:p.getAnswers(g).savings})}return k}function m(a){var b=$(".chart-container[data-id\x3d"+a+"]"),d=b.children();if(d.length){a=$("input[type\x3drange][data-id\x3d"+a+"]");var c=a.attr("max"),e=a.attr("min");a=(a.val()-e)/(c-e);a=Math.min(Math.floor(a*d.length),d.length-1);b.find(".active").removeClass("active");b.find(".adjacent").removeClass("adjacent");$(d[a]).addClass("active").find(".column-value-display span").text($("#net-savings span").text());0<a&&$(d[a-1]).addClass("adjacent");
-a<d.length-1&&$(d[a+1]).addClass("adjacent")}}function n(a){var b=$("input[type\x3drange][data-id\x3d"+a+"]");a=b.parent().children(".input-value-display");a.children("span").text(b.val());var d=a.outerWidth(),c=b.attr("max")-b.attr("min");b=Math.round(b.parent().width()*(b.val()-b.attr("min"))/c-d/2);a.css("left",b+"px")}function h(a,b){var d=a.graph.attr("data-id");clearTimeout(r[d]);var c=a.graph,e=q.scrollTop(),k=e+q.height(),l=c.offset().top;c=l+c.height();c<=k&&c>=e||l<=k&&l>=e||b?(a.graph.html(f({data:g({numSteps:a.numSteps||
-31,input:a.targetInput,variateKey:a.targetInput.attr("variate-key")}),dataId:d})),m(d)):r[d]=setTimeout(h,1E3,a,!0)}function b(a){a=a||{};$(".chart-group-container").each(function(){var b=$(this);b.attr("data-id")==a.dataId||a.context&&b.attr("context")!=a.context||h({graph:b.children(".chart-container"),targetInput:b.children("input[type\x3drange]")})})}var p=a("./math.js"),q=$(window),r={};$(document).ready(function(){function a(a){if(a.val()!=a.attr("lastHandledValue")){var c=a.attr("data-id");
-$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").val(a.val());$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").attr("lastHandledValue",a.val());var d=p.getAnswers();$("#ans-dump").text(JSON.stringify(d));$("#net-savings span").text(d.savings);b({dataId:c,context:a.attr("context")});m(c);n(c);$(".graph-row[context\x3d"+a.attr("context")+"] .column.active .column-value-display span").text(d.savings)}}var c=0;$(".graph-row").each(function(){var a=$(this);a.find("input, .chart-group-container, .chart-container, .input-value-display").attr("data-id",
+k[d]=b("undefined"!=typeof c?c:l)*(parseInt(h[d].attr("scale"))||1)});for(var b=a.DR*a.DRD,c=a.VBL,e=a.VCOE*a.FPE/100,k=a.VCOF*a.FPE/100,l=0,d=1;d<=12*a.VDU;d++)e+=g(a,d),k+=m(a,d),0>=c&&(l+=a.VBCO*Math.pow(1-a.FBR/1200,d)/Math.pow(1+a.FRI/1200,d),c=a.VBL),c-=b;b=a.VCOE*Math.pow(1-a.FDE/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU);c=a.VCOF*Math.pow(1-a.FDD/100,a.VDU)/Math.pow(1+a.FRI/1200,a.VDU);k-=c;e=e-b+l;return{evCost:Math.round(e),evSalvage:Math.round(b),batteryReplaceMentCost:Math.round(l),fossilCost:Math.round(k),
+fossilSalvage:Math.round(c),savings:Math.round(k-e)}}}},{}],3:[function(a,c,e){function f(a){var b=100/a.data.length,d=-Infinity;a.data.forEach(function(a){a.val>d&&(d=a.val)});var k=Math.abs(100/d);return a.data.map(function(d,c){var l=Math.max(0,d.val*k);return'\x3cdiv style\x3d"width:'+b+'%;" class\x3d"column" data-id\x3d"'+a.dataId+'" range\x3d"'+d.range+'"\x3e\x3cdiv style\x3d"bottom:'+l+'%;" class\x3d"column-value-display" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e"+
+(0==c||c==a.data.length-1?'\x3cdiv style\x3d"bottom:'+l+'%;" class\x3d"column-value-display-terminal" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e":"")+'\x3cdiv style\x3d"height:'+l+'%;" class\x3d"column-value" value\x3d"'+d.val+'"\x3e\x3c/div\x3e\x3c/div\x3e'})}function g(a){var b=parseFloat(a.input.attr("min")),d=parseFloat(a.input.attr("max")),k=[],c=parseFloat(a.input.attr("step"));d=(d-b)/a.numSteps;for(var e=0;e<a.numSteps;e++){var f=c*Math.round((e*d+d/2+b)/
+c),g={};g[a.variateKey]=f;k.push({range:f,val:p.getAnswers(g).savings})}return k}function m(a){var b=$(".chart-container[data-id\x3d"+a+"]"),d=b.children();if(d.length){a=$("input[type\x3drange][data-id\x3d"+a+"]");var c=a.attr("max"),e=a.attr("min");a=(a.val()-e)/(c-e);a=Math.min(Math.floor(a*d.length),d.length-1);b.find(".active").removeClass("active");b.find(".adjacent").removeClass("adjacent");$(d[a]).addClass("active").find(".column-value-display span").text($("#net-savings span").text());0<
+a&&$(d[a-1]).addClass("adjacent");a<d.length-1&&$(d[a+1]).addClass("adjacent")}}function n(a){var b=$("input[type\x3drange][data-id\x3d"+a+"]");a=b.parent().children(".input-value-display");a.children("span").text(b.val());var d=a.outerWidth(),c=b.attr("max")-b.attr("min");b=Math.round(b.parent().width()*(b.val()-b.attr("min"))/c-d/2);a.css("left",b+"px")}function h(a,b){var d=a.graph.attr("data-id");clearTimeout(r[d]);var c=a.graph,e=q.scrollTop(),k=e+q.height(),l=c.offset().top;c=l+c.height();c<=
+k&&c>=e||l<=k&&l>=e||b?(a.graph.html(f({data:g({numSteps:a.numSteps||31,input:a.targetInput,variateKey:a.targetInput.attr("variate-key")}),dataId:d})),m(d)):r[d]=setTimeout(h,1E3,a,!0)}function b(a){a=a||{};$(".chart-group-container").each(function(){var b=$(this);b.attr("data-id")==a.dataId||a.context&&b.attr("context")!=a.context||h({graph:b.children(".chart-container"),targetInput:b.children("input[type\x3drange]")})})}var p=a("./math.js"),q=$(window),r={};$(document).ready(function(){function a(a){if(a.val()!=
+a.attr("lastHandledValue")){var d=a.attr("data-id");$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").val(a.val());$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").attr("lastHandledValue",a.val());var c=p.getAnswers();$("#net-savings span").text(c.savings);b({dataId:d,context:a.attr("context")});m(d);n(d);$(".graph-row[context\x3d"+a.attr("context")+"] .column.active .column-value-display span").text(c.savings)}}var c=0;$(".graph-row").each(function(){var a=$(this);a.find("input, .chart-group-container, .chart-container, .input-value-display").attr("data-id",
 c).attr("context",a.attr("context")).attr("variate-key",a.attr("variate-key"));c++});$(".chart-group-container\x3einput").each(function(){var a=$(this);if(a.hasClass("coupled-input")){var b=$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]");b.attr("min",a.attr("min"));b.attr("max",a.attr("max"));b.attr("step",a.attr("step"))}});$(".chart-container").on("click",".column",function(){var a=$(this);$("input[type\x3drange][data-id\x3d"+a.attr("data-id")+"]").val(a.attr("range")).change()});b();$(".coupled-input").change(function(){a($(this))});
-$(".coupled-input").on("input",function(){a($(this))});$(document).ready(function(){$("input[type\x3drange]").each(function(){n($(this).attr("data-id"))})});$("#net-savings span").text(p.getAnswers().savings);$("input[type\x3drange][variate-key\x3dVDU]").change(function(){var a=$(this).val(),b=$("input[variate-key\x3dFLT]");b.attr("max",a);b.val(Math.min(b.val(),a)).change()})})},{"./math.js":2}]},{},[1]);
+$(".coupled-input").on("input",function(){a($(this))});$(document).ready(function(){$("input[type\x3drange]").each(function(){n($(this).attr("data-id"))})});$("#net-savings span").text(p.getAnswers().savings);$("input[type\x3drange][variate-key\x3dVDU]").change(function(){var a=$(this).val(),b=$("input[variate-key\x3dFLT]");b.attr("max",a);b.val(Math.min(b.val(),a)).change()});$("#debug").click(function(){var a=p.getAnswers(),b="";Object.keys(a).forEach(function(c){b+=c+" \x3d\x3e "+a[c]+"\n"});alert(b)})})},
+{"./math.js":2}]},{},[1]);
 </script>
 </html>
 
