@@ -42,8 +42,7 @@ $(document).ready(function(){
 	});
 });
 
-function getEmi(params, vehicleType, numMonth){
-	if(numMonth > params.FLT*12) return 0;
+function getEmi(params, vehicleType){
 	principle = (vehicleType == 'e' ? params.VCOE : params.VCOF) * (1-(params.FPE/100));
 	interest = params.FLR / 1200;
 	var months = params.FLT * 12;
@@ -52,11 +51,9 @@ function getEmi(params, vehicleType, numMonth){
 }
 
 function getPviElectric(params, i){
-	var emi = getEmi(params, 'e', i);
 	var reeBlock = Math.pow(1+(params.REE/1200), i);
 	var fifBlock = Math.pow(1+(params.FIF/1200), i);
-	var friBlock = Math.pow(1+(params.FRI/1200), i);
-	return ((params.DR * params.DRD * ((params.VM * params.RER * reeBlock) + ((params.MEC + params.MEO) * fifBlock))) + emi) / friBlock;
+	return params.DR * params.DRD * ((params.VM * params.RER * reeBlock) + ((params.MEC + params.MEO) * fifBlock));
 }
 
 function getSalvageElectric(params){
@@ -64,11 +61,9 @@ function getSalvageElectric(params){
 }
 
 function getPviFossil(params, i){
-	var emi = getEmi(params, 'f', i);
 	var rfeBlock = Math.pow(1+(params.RFE/1200), i);
 	var fifBlock = Math.pow(1+(params.FIF/1200), i);
-	var friBlock = Math.pow(1+(params.FRI/1200), i);
-	return ((params.DR * params.DRD * ((params.RFR * rfeBlock / params.VDM) + ((params.MFC + params.MFO) * fifBlock))) + emi) / friBlock;
+	return params.DR * params.DRD * ((params.RFR * rfeBlock / params.VDM) + ((params.MFC + params.MFO) * fifBlock));
 }
 
 function getSalvageFossil(params){
@@ -76,9 +71,7 @@ function getSalvageFossil(params){
 }
 
 function getBatteryReplacementCost(params, i){
-	var friBlock = Math.pow(1+(params.FRI/1200), i);
-	var fbrBlock = Math.pow(1-(params.FBR/1200), i);
-	return params.VBCO * fbrBlock / friBlock;
+	return params.VBCO * Math.pow(1-(params.FBR/1200), i);
 }
 
 module.exports = {
@@ -91,34 +84,61 @@ module.exports = {
 		var monthlyKm = params.DR * params.DRD;
 		var availableBatteryLife = params.VBL;
 
-		var evCost = params.VCOE * params.FPE/100;
-		var fossilCost = params.VCOF * params.FPE/100;
+		var evDownPayment = params.VCOE * params.FPE/100;
+		var evEmi = getEmi(params, "e");
+		
+		var fossilDownPayment = params.VCOF * params.FPE/100;
+		var fossilEmi = getEmi(params, "f");
+
+		var emiMonths = params.FLT*12;
+
+		var evCost = evDownPayment;
+		var fossilCost = fossilDownPayment;
 		var batteryReplaceMentCost = 0;
+		var batteryMonths = [];
 		
 		for(var i=1; i<=params.VDU*12; i++){
-			evCost += getPviElectric(params, i);
-			fossilCost += getPviFossil(params, i);
+			var friBlock = Math.pow(1+(params.FRI/1200), i);
+		
+			evCost += getPviElectric(params, i) / friBlock;
+			fossilCost += getPviFossil(params, i) / friBlock;
+			
+			if(i <= emiMonths){
+				evCost += evEmi / friBlock;
+				fossilCost += fossilEmi / friBlock;
+			}
+			
 			if(availableBatteryLife <= 0){
-				batteryReplaceMentCost += getBatteryReplacementCost(params, i);
+				batteryReplaceMentCost += getBatteryReplacementCost(params, i) / friBlock;
 				availableBatteryLife = params.VBL;
+				batteryMonths.push(i);
 			}
 			availableBatteryLife -= monthlyKm;
 		}
 		
 		/* Salvage */
-		var salvageEv = getSalvageElectric(params);
-		var salvageFossil = getSalvageFossil(params);;
-		evCost -= salvageEv;
-		fossilCost -= salvageFossil;
+		var evSalvage = getSalvageElectric(params);
+		var fossilSalvage = getSalvageFossil(params);;
+		evCost -= evSalvage;
+		fossilCost -= fossilSalvage;
 		
 		evCost += batteryReplaceMentCost;
 		
 		return {
-			evCost: Math.round(evCost),
-			evSalvage: Math.round(salvageEv),
-			batteryReplaceMentCost: Math.round(batteryReplaceMentCost),
-			fossilCost: Math.round(fossilCost),
-			fossilSalvage: Math.round(salvageFossil),
+			emiMonths,
+			_s: "",
+			evCost,
+			evDownPayment,
+			evEmi,
+			batteryMonths,
+			batteryReplaceMentCost,
+			evSalvage,
+			__s: "",
+			fossilCost,
+			fossilDownPayment,
+			fossilEmi,
+			fossilSalvage,
+			___s: "",
 			savings: Math.round(fossilCost - evCost)
 		};
 	}

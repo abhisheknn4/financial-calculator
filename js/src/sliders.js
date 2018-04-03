@@ -194,7 +194,7 @@ $(document).ready(function(){
 		var newValue = $(this).val();
 		var loanTenureInput = $("input[variate-key=FLT]");
 		loanTenureInput.attr('max', newValue);
-		loanTenureInput.val(Math.min(loanTenureInput.val(), newValue)).change();
+		loanTenureInput.val(Math.min(loanTenureInput.val(), loanTenureInput.attr('max'))).change();
 	});
 	
 	$('#debug').click(function(){
@@ -202,7 +202,10 @@ $(document).ready(function(){
 		var str = "";
 		
 		Object.keys(answers).forEach(function(key){
-			str += key + " => " + answers[key] + "\n";
+			if(key.indexOf("_") == 0){
+				str += "\n";
+			}
+			else str += key + " :  " + Math.round(answers[key]) + "\n";
 		});
 		
 		alert(str);
