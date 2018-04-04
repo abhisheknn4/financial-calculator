@@ -46,6 +46,7 @@ function getEmi(params, vehicleType){
 	principle = (vehicleType == 'e' ? params.VCOE : params.VCOF) * (1-(params.FPE/100));
 	interest = params.FLR / 1200;
 	var months = params.FLT * 12;
+	if(interest == 0) return principle/months;
 	var powerVal = Math.pow(1+interest, months);
 	return (principle * interest * powerVal)/(powerVal - 1);
 }

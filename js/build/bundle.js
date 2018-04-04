@@ -1,19 +1,396 @@
-var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.ASSUME_ES5=!1;$jscomp.ASSUME_NO_NATIVE_MAP=!1;$jscomp.ASSUME_NO_NATIVE_SET=!1;$jscomp.defineProperty=$jscomp.ASSUME_ES5||"function"==typeof Object.defineProperties?Object.defineProperty:function(a,c,e){a!=Array.prototype&&a!=Object.prototype&&(a[c]=e.value)};$jscomp.getGlobal=function(a){return"undefined"!=typeof window&&window===a?a:"undefined"!=typeof global&&null!=global?global:a};$jscomp.global=$jscomp.getGlobal(this);$jscomp.SYMBOL_PREFIX="jscomp_symbol_";
-$jscomp.initSymbol=function(){$jscomp.initSymbol=function(){};$jscomp.global.Symbol||($jscomp.global.Symbol=$jscomp.Symbol)};$jscomp.Symbol=function(){var a=0;return function(c){return $jscomp.SYMBOL_PREFIX+(c||"")+a++}}();
-$jscomp.initSymbolIterator=function(){$jscomp.initSymbol();var a=$jscomp.global.Symbol.iterator;a||(a=$jscomp.global.Symbol.iterator=$jscomp.global.Symbol("iterator"));"function"!=typeof Array.prototype[a]&&$jscomp.defineProperty(Array.prototype,a,{configurable:!0,writable:!0,value:function(){return $jscomp.arrayIterator(this)}});$jscomp.initSymbolIterator=function(){}};$jscomp.arrayIterator=function(a){var c=0;return $jscomp.iteratorPrototype(function(){return c<a.length?{done:!1,value:a[c++]}:{done:!0}})};
-$jscomp.iteratorPrototype=function(a){$jscomp.initSymbolIterator();a={next:a};a[$jscomp.global.Symbol.iterator]=function(){return this};return a};$jscomp.iteratorFromArray=function(a,c){$jscomp.initSymbolIterator();a instanceof String&&(a+="");var e=0,f={next:function(){if(e<a.length){var g=e++;return{value:c(g,a[g]),done:!1}}f.next=function(){return{done:!0,value:void 0}};return f.next()}};f[Symbol.iterator]=function(){return f};return f};
-$jscomp.polyfill=function(a,c,e,f){if(c){e=$jscomp.global;a=a.split(".");for(f=0;f<a.length-1;f++){var g=a[f];g in e||(e[g]={});e=e[g]}a=a[a.length-1];f=e[a];c=c(f);c!=f&&null!=c&&$jscomp.defineProperty(e,a,{configurable:!0,writable:!0,value:c})}};$jscomp.polyfill("Array.prototype.keys",function(a){return a?a:function(){return $jscomp.iteratorFromArray(this,function(a){return a})}},"es6","es3");
-$jscomp.findInternal=function(a,c,e){a instanceof String&&(a=String(a));for(var f=a.length,g=0;g<f;g++){var m=a[g];if(c.call(e,m,g,a))return{i:g,v:m}}return{i:-1,v:void 0}};$jscomp.polyfill("Array.prototype.find",function(a){return a?a:function(a,e){return $jscomp.findInternal(this,a,e).v}},"es6","es3");
-(function(){function a(c,e,f){function g(b,p){if(!e[b]){if(!c[b]){var k="function"==typeof require&&require;if(!p&&k)return k(b,!0);if(m)return m(b,!0);p=Error("Cannot find module '"+b+"'");throw p.code="MODULE_NOT_FOUND",p;}p=e[b]={exports:{}};c[b][0].call(p.exports,function(a){var f=c[b][1][a];return g(f?f:a)},p,p.exports,a,c,e,f)}return e[b].exports}for(var m="function"==typeof require&&require,k=0;k<f.length;k++)g(f[k]);return g}return a})()({1:[function(a,c,e){a("./sliders.js");"serviceWorker"in
-navigator&&navigator.serviceWorker.register("/sw.js").catch(function(a){console.error("Error registering service worker",a)})},{"./sliders.js":3}],2:[function(a,c,e){function f(b,a){principle=("e"==a?b.VCOE:b.VCOF)*(1-b.FPE/100);interest=b.FLR/1200;b=Math.pow(1+interest,12*b.FLT);return principle*interest*b/(b-1)}function g(b,a){return("e"==a?b.VCOE:b.VCOF)*Math.pow(1-("e"==a?b.FDE:b.FDD)/100,b.VDU)/Math.pow(1+b.FRI/1200,12*b.VDU)}var m="DR DRD VDU FLR FLT FPE FIF FRI VCOE VM RER REE MEC MEO FDE FBR VBL VBCO VCOF VDM RFR RFE MFC MFO FDD".split(" "),
-k={};$(document).ready(function(){m.forEach(function(a){k[a]=$(".graph-row[variate-key\x3d"+a+"] input[type\x3drange]")})});c.exports={getAnswers:function(a){a=a||{};Object.keys(k).forEach(function(h){var d=a,r=parseFloat,b=a[h],c=k[h].val();d[h]=r("undefined"!=typeof b?b:c)*(parseInt(k[h].attr("scale"))||1)});for(var b=a.DR*a.DRD,c=a.VBL,e=a.VCOE*a.FPE/100,m=a.VCOE-e,u=f(a,"e"),h=a.VCOF*a.FPE/100,C=a.VCOF-h,d=f(a,"f"),r=12*a.FLT,z=12*a.VDU,q=e,n=h,A=0,B=[],t=-1,l=1;l<=z;l++){var v=Math.pow(1+a.FRI/
-1200,l);q+=a.DR*a.DRD*(a.VM*a.RER*Math.pow(1+a.REE/1200,l)+(a.MEC+a.MEO)*Math.pow(1+a.FIF/1200,l))/v;n+=a.DR*a.DRD*(a.RFR*Math.pow(1+a.RFE/1200,l)/a.VDM+(a.MFC+a.MFO)*Math.pow(1+a.FIF/1200,l))/v;l<=r&&(q+=u/v,n+=d/v);0>=c&&(c=a.VBCO*Math.pow(1-a.FBR/1200,l)/v,A+=c,q+=c,c=a.VBL,B.push(l));c-=b;q<=n&&-1==t?t=l:q>n&&(t=-1)}b=g(a,"e");l=g(a,"f");q-=b;n-=l;q<=n&&-1==t&&(t=z+1);return{emiMonths:r,_s:"",evNpv:q,evLoanAmount:m,evDownPayment:e,evEmi:u,batteryMonths:B,batteryReplaceMentCost:A,evSalvage:b,__s:"",
-fossilNpv:n,fossilLoanAmount:C,fossilDownPayment:h,fossilEmi:d,fossilSalvage:l,___s:"",savings:Math.round(n-q),payback:t}}}},{}],3:[function(a,c,e){function f(a){var h=100/a.data.length,d=-Infinity;a.data.forEach(function(a){a.val>d&&(d=a.val)});var r=Math.abs(100/d);return a.data.map(function(d,b){var c=Math.max(0,d.val*r);return'\x3cdiv style\x3d"width:'+h+'%;" class\x3d"column" data-id\x3d"'+a.dataId+'" range\x3d"'+d.range+'"\x3e\x3cdiv style\x3d"bottom:'+c+'%;" class\x3d"column-value-display" value\x3d"'+
-d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e"+(0==b||b==a.data.length-1?'\x3cdiv style\x3d"bottom:'+c+'%;" class\x3d"column-value-display-terminal" value\x3d"'+d.val+'"\x3e\u20b9 \x3cspan\x3e'+d.val+"\x3c/span\x3e\x3c/div\x3e":"")+'\x3cdiv style\x3d"height:'+c+'%;" class\x3d"column-value" value\x3d"'+d.val+'"\x3e\x3c/div\x3e\x3c/div\x3e'})}function g(a){var h=parseFloat(a.input.attr("min")),d=parseFloat(a.input.attr("max")),b=[],c=parseFloat(a.input.attr("step"));d=(d-h)/a.numSteps;
-for(var e=0;e<a.numSteps;e++){var f=c*Math.round((e*d+d/2+h)/c),g={};g[a.variateKey]=f;b.push({range:f,val:w.getAnswers(g).savings})}return b}function m(a){var b=$(".chart-container[data-id\x3d"+a+"]"),d=b.children();if(d.length){a=$("input[type\x3drange][data-id\x3d"+a+"]");var c=a.attr("max"),h=a.attr("min");a=(a.val()-h)/(c-h);a=Math.min(Math.floor(a*d.length),d.length-1);b.find(".active").removeClass("active");b.find(".adjacent").removeClass("adjacent");$(d[a]).addClass("active").find(".column-value-display span").text($("#net-savings span").text());
-0<a&&$(d[a-1]).addClass("adjacent");a<d.length-1&&$(d[a+1]).addClass("adjacent")}}function k(a){var b=$("input[type\x3drange][data-id\x3d"+a+"]");a=b.parent().children(".input-value-display");a.children("span").text(b.val());var d=a.outerWidth(),c=b.attr("max")-b.attr("min");b=Math.round(b.parent().width()*(b.val()-b.attr("min"))/c-d/2);a.css("left",b+"px")}function b(a,c){var d=a.graph.attr("data-id");clearTimeout(u[d]);var e=a.graph,h=y.scrollTop(),k=h+y.height(),n=e.offset().top;e=n+e.height();
-e<=k&&e>=h||n<=k&&n>=h||c?(a.graph.html(f({data:g({numSteps:a.numSteps||31,input:a.targetInput,variateKey:a.targetInput.attr("variate-key")}),dataId:d})),m(d)):u[d]=setTimeout(b,1E3,a,!0)}function p(a){a=a||{};$(".chart-group-container").each(function(){var c=$(this);c.attr("data-id")==a.dataId||a.context&&c.attr("context")!=a.context||b({graph:c.children(".chart-container"),targetInput:c.children("input[type\x3drange]")})})}function x(a){$("#net-savings span").text(a.savings);$("#payback-period span").text(-1==
-a.payback?"N/A":a.payback)}var w=a("./math.js"),y=$(window),u={};$(document).ready(function(){function a(a){if(a.val()!=a.attr("lastHandledValue")){var b=a.attr("data-id");$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").val(a.val());$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]").attr("lastHandledValue",a.val());var d=w.getAnswers();x(d);p({dataId:b,context:a.attr("context")});m(b);k(b);$(".graph-row[context\x3d"+a.attr("context")+"] .column.active .column-value-display span").text(d.savings)}}
-var b=0;$(".graph-row").each(function(){var a=$(this);a.find("input, .chart-group-container, .chart-container, .input-value-display").attr("data-id",b).attr("context",a.attr("context")).attr("variate-key",a.attr("variate-key"));b++});$(".chart-group-container\x3einput").each(function(){var a=$(this);if(a.hasClass("coupled-input")){var b=$(".coupled-input[data-id\x3d"+a.attr("data-id")+"]");b.attr("min",a.attr("min"));b.attr("max",a.attr("max"));b.attr("step",a.attr("step"))}});$(".chart-container").on("click",
-".column",function(){var a=$(this);$("input[type\x3drange][data-id\x3d"+a.attr("data-id")+"]").val(a.attr("range")).change()});p();$(".coupled-input").change(function(){a($(this))});$(".coupled-input").on("input",function(){a($(this))});$("input[type\x3drange]").each(function(){k($(this).attr("data-id"))});x(w.getAnswers());$("input[type\x3drange][variate-key\x3dVDU]").change(function(){var a=$(this).val(),b=$("input[type\x3drange][variate-key\x3dFLT]");b.attr("max",a);b.val(Math.min(b.val(),b.attr("max"))).change();
-m(b.attr("data-id"));k(b.attr("data-id"))}).change();$("#debug").click(function(){var a=w.getAnswers(),b="";Object.keys(a).forEach(function(c){b=0==c.indexOf("_")?b+"\n":b+(c+" :  "+Math.round(a[c])+"\n")});alert(b)})})},{"./math.js":2}]},{},[1]);
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+require("./sliders.js");
+
+if('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('/sw.js').catch(function(err) {console.error("Error registering service worker", err);});
+}
+
+},{"./sliders.js":3}],2:[function(require,module,exports){
+function issetOrElse(val, elseVal){
+	return typeof val != 'undefined' ? val : elseVal;
+}
+
+var variableList = [
+	
+	'DR', // Daily run
+	'DRD', // Daily run days
+	'VDU', // Duration of use
+	'FLR', // Loan rate
+	'FLT', // Loan tenure
+	'FPE', // Down payment
+	'FIF', // Inflation rate
+	'FRI', // Investment savings rate
+	
+	/* Electric */
+	'VCOE', // Vehicle cost (electric)
+	'VM', // Vehicle mileage
+	'RER', // Electricity rate
+	'REE', // Electricity rate escalation rate
+	'MEC', // Maintenance cost
+	'MEO', // Other operational cost
+	'FDE', // Depreciation rate
+	'FBR', // Battery price reduction rate
+	'VBL', // Battery life
+	'VBCO', // Current battery cost
+	
+	/* Fossil */
+	'VCOF', // Vehicle cost (fossil)
+	'VDM', // Vehicle mileage
+	'RFR', // Diesel price
+	'RFE', // Diesel price escalation rate
+	'MFC', // Maintenance cost
+	'MFO', // Other operational cost
+	'FDD', // Depreciation rate
+]
+
+var variables = {};
+$(document).ready(function(){
+	variableList.forEach(function(varName){
+		variables[varName] = $('.graph-row[variate-key='+varName+'] input[type=range]');
+	});
+});
+
+function getEmi(params, vehicleType){
+	principle = (vehicleType == 'e' ? params.VCOE : params.VCOF) * (1-(params.FPE/100));
+	interest = params.FLR / 1200;
+	var months = params.FLT * 12;
+	if(interest == 0) return principle/months;
+	var powerVal = Math.pow(1+interest, months);
+	return (principle * interest * powerVal)/(powerVal - 1);
+}
+
+function getPviElectric(params, i){
+	var reeBlock = Math.pow(1+(params.REE/1200), i);
+	var fifBlock = Math.pow(1+(params.FIF/1200), i);
+	return params.DR * params.DRD * ((params.VM * params.RER * reeBlock) + ((params.MEC + params.MEO) * fifBlock));
+}
+
+function getPviFossil(params, i){
+	var rfeBlock = Math.pow(1+(params.RFE/1200), i);
+	var fifBlock = Math.pow(1+(params.FIF/1200), i);
+	return params.DR * params.DRD * ((params.RFR * rfeBlock / params.VDM) + ((params.MFC + params.MFO) * fifBlock));
+}
+
+function getSalvage(params, vehicleType){
+	var vehicleCost = vehicleType == 'e' ? params.VCOE : params.VCOF;
+	var depreciationRate = vehicleType == 'e' ? params.FDE : params.FDD;
+	
+	return vehicleCost * Math.pow(1 - (depreciationRate/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
+}
+
+module.exports = {
+	getAnswers: function(params){
+		params = params || {};
+		Object.keys(variables).forEach(function(varName){
+			params[varName] = parseFloat(issetOrElse(params[varName], variables[varName].val())) * (parseInt(variables[varName].attr('scale')) || 1);
+		});
+		
+		var monthlyKm = params.DR * params.DRD;
+		var availableBatteryLife = params.VBL;
+
+		var evDownPayment = params.VCOE * params.FPE/100;
+		var evLoanAmount = params.VCOE - evDownPayment;
+		var evEmi = getEmi(params, "e");
+		
+		var fossilDownPayment = params.VCOF * params.FPE/100;
+		var fossilLoanAmount = params.VCOF - fossilDownPayment;
+		var fossilEmi = getEmi(params, "f");
+
+		var emiMonths = params.FLT*12;
+		var usageMonths = params.VDU*12;
+
+		var evNpv = evDownPayment;
+		var fossilNpv = fossilDownPayment;
+		var batteryReplaceMentCost = 0;
+		var batteryMonths = [];
+		
+		var payback = -1;
+		
+		for(var i=1; i<=usageMonths; i++){
+			var friBlock = Math.pow(1+(params.FRI/1200), i);
+		
+			evNpv += getPviElectric(params, i) / friBlock;
+			fossilNpv += getPviFossil(params, i) / friBlock;
+			
+			if(i <= emiMonths){
+				evNpv += evEmi / friBlock;
+				fossilNpv += fossilEmi / friBlock;
+			}
+			
+			if(availableBatteryLife <= 0){
+				var batteryEffect = params.VBCO * Math.pow(1-(params.FBR/1200), i) / friBlock;
+				
+				batteryReplaceMentCost += batteryEffect;
+				evNpv += batteryEffect;
+				
+				availableBatteryLife = params.VBL;
+				batteryMonths.push(i);
+			}
+			availableBatteryLife -= monthlyKm;
+			
+			if(evNpv <= fossilNpv && payback == -1){
+				payback = i;
+			}
+			else if(evNpv > fossilNpv){
+				payback = -1;
+			}
+		}
+		
+		/* Salvage */
+		var evSalvage = getSalvage(params, 'e');
+		var fossilSalvage = getSalvage(params, 'f');
+		evNpv -= evSalvage;
+		fossilNpv -= fossilSalvage;
+		
+		/* Payback after salvage */
+		if(evNpv <= fossilNpv && payback == -1){
+			payback = usageMonths + 1;
+		}
+		
+		return {
+			emiMonths,
+			_s: "",
+			evNpv,
+			evLoanAmount,
+			evDownPayment,
+			evEmi,
+			batteryMonths,
+			batteryReplaceMentCost,
+			evSalvage,
+			__s: "",
+			fossilNpv,
+			fossilLoanAmount,
+			fossilDownPayment,
+			fossilEmi,
+			fossilSalvage,
+			___s: "",
+			savings: Math.round(fossilNpv - evNpv),
+			payback
+		};
+	}
+}
+
+},{}],3:[function(require,module,exports){
+var math = require("./math.js");
+
+var jqWin = $(window);
+function isScrolledIntoView(elem){
+	var docViewTop = jqWin.scrollTop();
+	var docViewBottom = docViewTop + jqWin.height();
+	var elemTop = elem.offset().top;
+	var elemBottom = elemTop + elem.height();
+	return (elemBottom <= docViewBottom && elemBottom >= docViewTop) || 
+		(elemTop <= docViewBottom && elemTop >= docViewTop);
+}
+
+/* Returns div bars for a specific graph area */
+function getDivs(params){
+	var totalColumns = params.data.length;
+	var width = 100/totalColumns;
+	
+	var maxValue = -Infinity;
+	params.data.forEach(function(o){
+		if(o.val > maxValue) maxValue = o.val;
+	});
+	var multiplier = Math.abs(100/maxValue);
+	
+	return params.data.map(function(o, index){
+		var isTerminal = index==0 || index==params.data.length-1;
+		var heightPercent = Math.max(0, o.val*multiplier);
+		
+		return "<div style=\"width:"+width+"%;\" class=\"column\" data-id=\""+params.dataId+"\" range=\""+o.range+"\">"+
+			"<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>"+
+			(isTerminal ? "<div style=\"bottom:"+heightPercent+"%;\" class=\"column-value-display-terminal\" value=\""+o.val+"\">₹ <span>"+o.val+"</span></div>" : "")+
+			"<div style=\"height:"+heightPercent+"%;\" class=\"column-value\" value=\""+o.val+"\"></div>"+
+		"</div>"
+	});
+}
+
+/* Computes (x,y) coordinates to be plotted for a specific variate */
+function getData(params){
+	var minValue = parseFloat(params.input.attr('min'));
+	var maxValue = parseFloat(params.input.attr('max'));
+	var range = [];
+	var sliderStep = parseFloat(params.input.attr('step'));
+	var stepSize = (maxValue-minValue)/params.numSteps;
+	for(var i=0; i<params.numSteps; i++){
+		var x = (i*stepSize) + (stepSize/2) + minValue;
+		var multiplier = Math.round(x/sliderStep);
+		var roundX = sliderStep*multiplier;
+		
+		var variateBlock = {};
+		variateBlock[params.variateKey] = roundX;
+		
+		range.push({
+			range: roundX,
+			val: math.getAnswers(variateBlock).savings
+		});
+	}
+	return range;
+}
+
+/* Sets the active bar (i.e. the one which includes the current input value) for a specific graph area */
+function setActiveBar(dataId){
+	var graph = $('.chart-container[data-id='+dataId+']');
+	var bars = graph.children();
+	if(bars.length){
+		var input = $('input[type=range][data-id='+dataId+']');
+		var maxValue = input.attr('max');
+		var minValue = input.attr('min');
+		var ratio = (input.val() - minValue) / (maxValue - minValue);
+		var targetBarId = Math.min(Math.floor(ratio * bars.length), bars.length - 1);
+	
+		graph.find('.active').removeClass('active');
+		graph.find('.adjacent').removeClass('adjacent');
+		
+		$(bars[targetBarId]).addClass('active').find('.column-value-display span').text($('#net-savings span').text());
+		if(targetBarId>0) $(bars[targetBarId-1]).addClass('adjacent');
+		if(targetBarId<bars.length-1) $(bars[targetBarId+1]).addClass('adjacent');
+	}
+}
+
+/* Update the displayed input value corresponding to a slider */
+function setValueDisplay(dataId){
+	var input = $('input[type=range][data-id='+dataId+']');
+	var valueDisplay = input.parent().children('.input-value-display');
+	
+	/* Set value */
+	valueDisplay.children('span').text(input.val());	
+	
+	/* Set Position */
+	var displayWidth = valueDisplay.outerWidth();
+	var range = input.attr('max') - input.attr('min');
+	var left = Math.round((input.parent().width() * (input.val() - input.attr('min'))/range) - displayWidth/2);
+	valueDisplay.css('left', left + 'px');
+}
+
+var drawTimeOuts = {};
+function drawGraph(params, delayed){
+	var selfDataId = params.graph.attr('data-id');
+	clearTimeout(drawTimeOuts[selfDataId]);
+	/* Update only those graphs which are visible on screen */
+	if(isScrolledIntoView(params.graph) || delayed){
+		var numSteps = params.numSteps || 31;
+		params.graph.html(getDivs({
+			data: getData({
+				numSteps: numSteps,
+				input: params.targetInput,
+				variateKey: params.targetInput.attr('variate-key')
+			}),
+			dataId: selfDataId
+		}));
+		setActiveBar(selfDataId);
+	}
+	/* Other graphs will be updated only after input change stabalizes */
+	else{
+		drawTimeOuts[selfDataId] = setTimeout(drawGraph, 1000, params, true);
+	}
+}
+
+function drawGraphs(params){
+	params = params || {};
+	$('.chart-group-container').each(function(){
+		var self = $(this);
+		if(self.attr('data-id') != params.dataId && (!params.context || self.attr('context') == params.context)){
+			drawGraph({
+				graph: self.children('.chart-container'),
+				targetInput: self.children('input[type=range]')
+			});
+		}
+	});
+}
+
+$(document).ready(function(){	
+	var dataIdSequence = 0;
+	$('.graph-row').each(function(){
+		var self = $(this);
+		self.find('input, .chart-group-container, .chart-container, .input-value-display')
+			.attr('data-id', dataIdSequence)
+			.attr('context', self.attr('context'))
+			.attr('variate-key', self.attr('variate-key'));
+		dataIdSequence++;
+	});
+	
+	$('.chart-group-container>input').each(function(){
+		var self = $(this);	
+		if(self.hasClass('coupled-input')){
+			var inputs = $('.coupled-input[data-id='+self.attr('data-id')+']');
+			inputs.attr('min', self.attr('min'));
+			inputs.attr('max', self.attr('max'));
+			inputs.attr('step', self.attr('step'));
+		}
+	});
+	
+	$('.chart-container').on('click', '.column', function() {
+		var self = $(this);
+		$('input[type=range][data-id='+self.attr('data-id')+']').val(self.attr('range')).change();
+	});
+	
+	drawGraphs();
+	
+	var changeHandlerStateKey = "lastHandledValue";
+	function changeHandler(elem){
+		if(elem.val() != elem.attr(changeHandlerStateKey)){
+			var dataId = elem.attr('data-id');
+			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').val(elem.val());
+			$('.coupled-input[data-id='+(elem.attr('data-id'))+']').attr(changeHandlerStateKey, elem.val());
+		
+			var answers = math.getAnswers();
+			
+			displayAnswers(answers);
+
+			drawGraphs({
+				dataId: dataId,
+				context: elem.attr('context')
+			});
+			setActiveBar(dataId);
+			setValueDisplay(dataId);
+		
+			$('.graph-row[context='+elem.attr('context')+'] .column.active .column-value-display span').text(answers.savings);
+		}
+	}
+	$(".coupled-input").change(function(){
+		changeHandler($(this));
+	});
+	$(".coupled-input").on("input", function(){
+		changeHandler($(this));
+	});
+	
+	$('input[type=range]').each(function(){
+		setValueDisplay($(this).attr('data-id'));
+	});
+	
+	displayAnswers(math.getAnswers());
+	
+	/* Constraint setting */
+	$("input[type=range][variate-key=VDU]").change(function(){
+		var newValue = $(this).val();
+		var loanTenureInput = $("input[type=range][variate-key=FLT]");
+		loanTenureInput.attr('max', newValue);
+		loanTenureInput.val(Math.min(loanTenureInput.val(), loanTenureInput.attr('max'))).change();
+		
+		setActiveBar(loanTenureInput.attr('data-id'));
+		setValueDisplay(loanTenureInput.attr('data-id'));
+	}).change();
+	
+	$('#debug').click(function(){
+		var answers = math.getAnswers();
+		var str = "";
+		
+		Object.keys(answers).forEach(function(key){
+			if(key.indexOf("_") == 0){
+				str += "\n";
+			}
+			else str += key + " :  " + Math.round(answers[key]) + "\n";
+		});
+		
+		alert(str);
+	});
+});
+
+function displayAnswers(answers){
+	$('#net-savings span').text(answers.savings);
+	$('#payback-period span').text(answers.payback == -1 ? "N/A" : answers.payback);
+}
+
+},{"./math.js":2}]},{},[1]);
