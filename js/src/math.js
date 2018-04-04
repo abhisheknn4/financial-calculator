@@ -67,7 +67,7 @@ function getSalvage(params, vehicleType){
 	var vehicleCost = vehicleType == 'e' ? params.VCOE : params.VCOF;
 	var depreciationRate = vehicleType == 'e' ? params.FDE : params.FDD;
 	
-	return vehicleCost * Math.pow(1 - (depreciationRate/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
+	return vehicleCost * Math.pow(1 - (depreciationRate/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12 + 1);
 }
 
 module.exports = {
