@@ -57,7 +57,7 @@ function getPviElectric(params, i){
 }
 
 function getSalvageElectric(params){
-	return params.VCOE * Math.pow(1 - (params.FDE/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
+	return params.VCOE * Math.pow(1 - (params.FDE/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
 }
 
 function getPviFossil(params, i){
@@ -67,7 +67,7 @@ function getPviFossil(params, i){
 }
 
 function getSalvageFossil(params){
-	return params.VCOF * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU);
+	return params.VCOF * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
 }
 
 module.exports = {
@@ -136,6 +136,7 @@ module.exports = {
 			_s: "",
 			evCost,
 			evDownPayment,
+			// loan 
 			evEmi,
 			batteryMonths,
 			batteryReplaceMentCost,
