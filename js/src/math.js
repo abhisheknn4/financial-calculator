@@ -56,18 +56,17 @@ function getPviElectric(params, i){
 	return params.DR * params.DRD * ((params.VM * params.RER * reeBlock) + ((params.MEC + params.MEO) * fifBlock));
 }
 
-function getSalvageElectric(params){
-	return params.VCOE * Math.pow(1 - (params.FDE/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
-}
-
 function getPviFossil(params, i){
 	var rfeBlock = Math.pow(1+(params.RFE/1200), i);
 	var fifBlock = Math.pow(1+(params.FIF/1200), i);
 	return params.DR * params.DRD * ((params.RFR * rfeBlock / params.VDM) + ((params.MFC + params.MFO) * fifBlock));
 }
 
-function getSalvageFossil(params){
-	return params.VCOF * Math.pow(1 - (params.FDD/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
+function getSalvage(params, vehicleType){
+	var vehicleCost = vehicleType == 'e' ? params.VCOE : params.VCOF;
+	var depreciationRate = vehicleType == 'e' ? params.FDE : params.FDD;
+	
+	return vehicleCost * Math.pow(1 - (depreciationRate/100), params.VDU) / Math.pow(1 + (params.FRI/1200), params.VDU*12);
 }
 
 module.exports = {
@@ -81,73 +80,82 @@ module.exports = {
 		var availableBatteryLife = params.VBL;
 
 		var evDownPayment = params.VCOE * params.FPE/100;
+		var evLoanAmount = params.VCOE - evDownPayment;
 		var evEmi = getEmi(params, "e");
 		
 		var fossilDownPayment = params.VCOF * params.FPE/100;
+		var fossilLoanAmount = params.VCOF - fossilDownPayment;
 		var fossilEmi = getEmi(params, "f");
 
 		var emiMonths = params.FLT*12;
+		var usageMonths = params.VDU*12;
 
-		var evCost = evDownPayment;
-		var fossilCost = fossilDownPayment;
+		var evNpv = evDownPayment;
+		var fossilNpv = fossilDownPayment;
 		var batteryReplaceMentCost = 0;
 		var batteryMonths = [];
 		
 		var payback = -1;
 		
-		for(var i=1; i<=params.VDU*12; i++){
+		for(var i=1; i<=usageMonths; i++){
 			var friBlock = Math.pow(1+(params.FRI/1200), i);
 		
-			evCost += getPviElectric(params, i) / friBlock;
-			fossilCost += getPviFossil(params, i) / friBlock;
+			evNpv += getPviElectric(params, i) / friBlock;
+			fossilNpv += getPviFossil(params, i) / friBlock;
 			
 			if(i <= emiMonths){
-				evCost += evEmi / friBlock;
-				fossilCost += fossilEmi / friBlock;
+				evNpv += evEmi / friBlock;
+				fossilNpv += fossilEmi / friBlock;
 			}
 			
 			if(availableBatteryLife <= 0){
 				var batteryEffect = params.VBCO * Math.pow(1-(params.FBR/1200), i) / friBlock;
 				
 				batteryReplaceMentCost += batteryEffect;
-				evCost += batteryEffect;
+				evNpv += batteryEffect;
 				
 				availableBatteryLife = params.VBL;
 				batteryMonths.push(i);
 			}
 			availableBatteryLife -= monthlyKm;
 			
-			if(evCost <= fossilCost && payback == -1){
+			if(evNpv <= fossilNpv && payback == -1){
 				payback = i;
 			}
-			else if(evCost > fossilCost){
+			else if(evNpv > fossilNpv){
 				payback = -1;
 			}
 		}
 		
 		/* Salvage */
-		var evSalvage = getSalvageElectric(params);
-		var fossilSalvage = getSalvageFossil(params);;
-		evCost -= evSalvage;
-		fossilCost -= fossilSalvage;
+		var evSalvage = getSalvage(params, 'e');
+		var fossilSalvage = getSalvage(params, 'f');
+		evNpv -= evSalvage;
+		fossilNpv -= fossilSalvage;
+		
+		/* Payback after salvage */
+		if(evNpv <= fossilNpv && payback == -1){
+			payback = usageMonths + 1;
+		}
 		
 		return {
 			emiMonths,
 			_s: "",
-			evCost,
+			evNpv,
+			evLoanAmount,
 			evDownPayment,
-			// loan 
 			evEmi,
 			batteryMonths,
 			batteryReplaceMentCost,
 			evSalvage,
 			__s: "",
-			fossilCost,
+			fossilNpv,
+			fossilLoanAmount,
 			fossilDownPayment,
 			fossilEmi,
 			fossilSalvage,
 			___s: "",
-			savings: Math.round(fossilCost - evCost),
+			savings: Math.round(fossilNpv - evNpv),
 			payback
 		};
 	}

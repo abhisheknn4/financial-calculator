@@ -217,5 +217,5 @@ $(document).ready(function(){
 
 function displayAnswers(answers){
 	$('#net-savings span').text(answers.savings);
-	$('#payback-period span').text(answers.payback);
+	$('#payback-period span').text(answers.payback == -1 ? "N/A" : answers.payback);
 }
