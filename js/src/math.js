@@ -96,13 +96,22 @@ module.exports = {
 		var batteryReplaceMentCost = 0;
 		var batteryMonths = [];
 		
+		var evPvis = [];
+		var fossilPvis = [];
+		
 		var payback = -1;
 		
 		for(var i=1; i<=usageMonths; i++){
 			var friBlock = Math.pow(1+(params.FRI/1200), i);
 		
-			evNpv += getPviElectric(params, i) / friBlock;
-			fossilNpv += getPviFossil(params, i) / friBlock;
+			var evPvi = getPviElectric(params, i) / friBlock;
+			var fossilPvi = getPviFossil(params, i) / friBlock;
+			
+			evNpv += evPvi;
+			fossilNpv += fossilPvi;
+			
+			evPvis.push(evPvi);
+			fossilPvis.push(fossilPvi);
 			
 			if(i <= emiMonths){
 				evNpv += evEmi / friBlock;
@@ -139,6 +148,8 @@ module.exports = {
 			payback = usageMonths + 1;
 		}
 		
+		evPvis = evPvis.map(Math.round);
+		fossilPvis = fossilPvis.map(Math.round);
 		return {
 			emiMonths,
 			_s: "",
@@ -149,12 +160,14 @@ module.exports = {
 			batteryMonths,
 			batteryReplaceMentCost,
 			evSalvage,
+			evPvis,
 			__s: "",
 			fossilNpv,
 			fossilLoanAmount,
 			fossilDownPayment,
 			fossilEmi,
 			fossilSalvage,
+			fossilPvis,
 			___s: "",
 			savings: Math.round(fossilNpv - evNpv),
 			payback

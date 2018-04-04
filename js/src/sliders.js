@@ -208,7 +208,7 @@ $(document).ready(function(){
 			if(key.indexOf("_") == 0){
 				str += "\n";
 			}
-			else str += key + " :  " + Math.round(answers[key]) + "\n";
+			else str += key + " :  " + (isNaN(answers[key]) ? answers[key] : Math.round(answers[key])) + "\n";
 		});
 		
 		alert(str);
