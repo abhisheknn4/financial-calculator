@@ -137,27 +137,54 @@ $(document).ready(function(){
 			.attr('variate-key', self.attr('variate-key'));
 		dataIdSequence++;
 		
+		var chartGroupContainer = self.find('.chart-group-container');
 		var customSlider = $('<div class="slider-container"><div class="slider-track"><div class="slider-thumb"></div></div></div>');
 		var thumb = customSlider.find('.slider-thumb');
 		var targetInput = self.find('input[type=range]');
 		var inputMin = parseFloat(targetInput.attr('min')) || 0;
 		var inputWidth = (parseFloat(targetInput.attr('max')) || 0) - inputMin;
 		
+		var trackerActive = false;
 		function mousePositionHandler(e){
-			var delta = Math.max(0, Math.min(customSlider.width(), e.pageX - customSlider.offset().left));
-			targetInput.val(inputMin + (inputWidth*delta/customSlider.width())).change();
+			if(trackerActive || e.type == 'click'){
+				var delta = Math.max(0, Math.min(customSlider.width(), e.pageX - customSlider.offset().left));
+				targetInput.val(inputMin + (inputWidth*delta/customSlider.width())).change();
+			}
 		}
 		
-		customSlider.mousemove(mousePositionHandler).click(mousePositionHandler);
-		
-		targetInput.change(function(){
-			var thumbWidth = thumb.outerWidth();
-			var delta = customSlider.width() * (targetInput.val() - inputMin) / inputWidth;
-			var left = Math.max(thumbWidth/-2, Math.min(customSlider.width() - thumbWidth/2, delta - thumbWidth/2));
-			thumb.css('left', left + 'px');
+		chartGroupContainer.mousemove(mousePositionHandler).click(mousePositionHandler);
+		chartGroupContainer.mousedown(function(){
+			trackerActive = true;
+		}).mouseup(function(){
+			trackerActive = false;
+		}).mouseleave(function(){
+			trackerActive = false;
 		});
 		
-		self.find('.chart-group-container').append(customSlider);
+		function inputChangeHandler(newValue){
+			if(newValue || newValue === 0){
+				var thumbWidth = thumb.outerWidth();
+				var delta = customSlider.width() * (newValue - inputMin) / inputWidth;
+				var left = Math.max(thumbWidth/-2, Math.min(customSlider.width() - thumbWidth/2, delta - thumbWidth/2));
+				thumb.css('left', left + 'px');
+			}
+			else{
+				setTimeout(function(){
+					inputChangeHandler(targetInput.val());
+				}, 100);
+			}
+		};
+		
+		self.find('input').on('input', function(){
+			inputChangeHandler($(this).val());
+		});
+		targetInput.change(function(){
+			inputChangeHandler($(this).val());
+		})
+		
+		chartGroupContainer.append(customSlider);
+		/* Set default position */
+		inputChangeHandler();
 	});
 	
 	$('.chart-group-container>input').each(function(){
@@ -167,12 +194,8 @@ $(document).ready(function(){
 			inputs.attr('min', self.attr('min'));
 			inputs.attr('max', self.attr('max'));
 			inputs.attr('step', self.attr('step'));
+			inputs.attr('value', self.attr('value'));
 		}
-	});
-	
-	$('.chart-container').on('click', '.column', function() {
-		var self = $(this);
-		$('input[type=range][data-id='+self.attr('data-id')+']').val(self.attr('range')).change();
 	});
 	
 	drawGraphs();
@@ -201,7 +224,7 @@ $(document).ready(function(){
 	$(".coupled-input").change(function(){
 		changeHandler($(this));
 	});
-	$(".coupled-input").on("input", function(){
+	$(".coupled-input[type=number]").on("input", function(){
 		changeHandler($(this));
 	});
 	
