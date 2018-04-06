@@ -7,11 +7,6 @@ body {
 	font-family: 'Nunito', sans-serif;
 }
 
-body, html {
-	/* Disables pull-to-refresh */
-	overscroll-behavior-y: none;
-}
-
 .main-container {
 	padding-top: 72px;
 }

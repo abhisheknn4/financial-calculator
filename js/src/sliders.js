@@ -141,29 +141,42 @@ $(document).ready(function(){
 		var customSlider = $('<div class="slider-container"><div class="slider-track"><div class="slider-thumb"></div></div></div>');
 		var thumb = customSlider.find('.slider-thumb');
 		var targetInput = self.find('input[type=range]');
-		var inputMin = parseFloat(targetInput.attr('min')) || 0;
-		var inputWidth = (parseFloat(targetInput.attr('max')) || 0) - inputMin;
 		
 		var trackerActive = false;
 		function mousePositionHandler(e){
 			if(trackerActive || e.type == 'click'){
-				var delta = Math.max(0, Math.min(customSlider.width(), e.pageX - customSlider.offset().left));
+				var pageX = e.type.indexOf('touch') === 0 ? e.originalEvent.touches[0].pageX : e.pageX;
+				var delta = Math.max(0, Math.min(customSlider.width(), pageX - customSlider.offset().left));
+				
+				var inputMin = parseFloat(targetInput.attr('min')) || 0;
+				var inputWidth = (parseFloat(targetInput.attr('max')) || 0) - inputMin;
+				
 				targetInput.val(inputMin + (inputWidth*delta/customSlider.width())).change();
 			}
 		}
 		
-		chartGroupContainer.mousemove(mousePositionHandler).click(mousePositionHandler);
-		chartGroupContainer.mousedown(function(){
+		/* Complete chart area handles events for desktop */
+		chartGroupContainer.on('mousemove click', mousePositionHandler);
+		chartGroupContainer.on('mousedown', function(){
 			trackerActive = true;
-		}).mouseup(function(){
+		}).on('mouseup mouseleave', function(){
 			trackerActive = false;
-		}).mouseleave(function(){
+		});
+		
+		/* Only slider area handles events for mobile */
+		customSlider.on('touchmove click', mousePositionHandler);
+		customSlider.on('touchstart', function(){
+			trackerActive = true;
+		}).on('touchend', function(){
 			trackerActive = false;
 		});
 		
 		function inputChangeHandler(newValue){
 			if(newValue || newValue === 0){
+				var inputMin = parseFloat(targetInput.attr('min')) || 0;
+				var inputWidth = (parseFloat(targetInput.attr('max')) || 0) - inputMin;
 				var thumbWidth = thumb.outerWidth();
+				
 				var delta = customSlider.width() * (newValue - inputMin) / inputWidth;
 				var left = Math.max(thumbWidth/-2, Math.min(customSlider.width() - thumbWidth/2, delta - thumbWidth/2));
 				thumb.css('left', left + 'px');
