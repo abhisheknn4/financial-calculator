@@ -169,7 +169,7 @@ module.exports = {
 			fossilSalvage,
 			fossilPvis,
 			___s: "",
-			savings: Math.round((fossilNpv - evNpv) / 1000),
+			savings: Math.round((fossilNpv - evNpv) / 1000)/100,
 			payback
 		};
 	}
