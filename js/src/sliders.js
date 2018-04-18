@@ -175,7 +175,7 @@ $(document).ready(function(){
 			if(newValue || newValue === 0){
 				var inputMin = parseFloat(targetInput.attr('min')) || 0;
 				var inputWidth = (parseFloat(targetInput.attr('max')) || 0) - inputMin;
-				var thumbWidth = thumb.outerWidth();
+				var thumbWidth = thumb.width();
 				
 				var delta = customSlider.width() * (newValue - inputMin) / inputWidth;
 				var left = Math.max(thumbWidth/-2, Math.min(customSlider.width() - thumbWidth/2, delta - thumbWidth/2));
